@@ -1,0 +1,42 @@
+/* avatar wrapper */
+.avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+}
+.swiper-slide {
+  width: 5rem;
+  height: 6rem;
+  border-radius: 1rem;
+  margin:0.2rem;
+}
+
+.swiper-slide.selected {
+  background-color: #ffc0cb38;
+}
+
+/* avatar */
+.avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+
+/* info wrapper */
+.info-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1rem;
+}
+
+/* title */
+.title {
+  font-size: .75rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+

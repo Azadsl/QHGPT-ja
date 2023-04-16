@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import About from '../components/about.md'
+---
+
+<Layout title="about">
+  <main >
+    <Header />
+    <article class="text-base prose dark:prose-invert lg:prose-xl">
+      <About />
+    </article>
+    <Footer />
+  </main>
+</Layout>
