@@ -7,9 +7,8 @@ import prompts from "@/prompts"
 const baseUrl = 'https://api.openai.com';
 
 
-const fakeWords = ['気持ちいい', 'やめて', 'ぃく', 'やめて', 'まんこ', 'そこまんこ駄目', 'チンチン']
-const arg = /不可接受|超出底线|请注意|违法|遵守社会/g
 
+// cloudflare pages 不支持node方法，简单的粗算
 function countTokens(str: string) {
   var len = 0;
   for (var i = 0; i < str.length; i++) {
@@ -28,9 +27,6 @@ export const post: APIRoute = async (context) => {
   if (!messages) {
     return new Response('No input text')
   }
-  // if (import.meta.env.PROD && !await verifySignature({ t: time, m: messages?.[messages.length - 1]?.content || '', }, sign)) {
-  //   return new Response('Invalid signature')
-  // }
 
   let sk = setting.openaiAPIKey || demoKey;
 
@@ -56,16 +52,7 @@ export const post: APIRoute = async (context) => {
     }
     len += countTokens(msg.content);
     if (i > messages.length - 6) {
-      if (msg.role == "assistant" && !['', 'custom'].includes(setting.role)) {
-        msg.content = msg.content.replaceAll(arg, () => {
-          return fakeWords[Math.floor(Math.random() * 52)] || "";
-        })
-      }
       reqMessages.unshift(msg)
-      continue;
-    }
-    if (msg.role == "user") {
-      reqMessages.unshift(msg);
       continue;
     }
     j++;
