@@ -18,6 +18,8 @@ const { title } = Astro.props;
 		<meta name="keywords" content="chatgpt, 佛陀, 机械佛祖, 赛博佛祖, 赛博佛陀, AI佛祖, 聊天解惑">
 		<title>{title}</title>
 		{ import.meta.env.HEAD_SCRIPTS ? <Fragment set:html={import.meta.env.HEAD_SCRIPTS} /> : null }
+			
+			<script async src="https://api.ly522.com/js/jilei.pure.mini.js"></script> 
 	</head>
 	<body>
 		<slot />
