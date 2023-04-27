@@ -32,7 +32,7 @@ export const post: APIRoute = async (context) => {
 
   // 限制免费key的请求字数
   if (sk == demoKey) {
-    return new Response("⚠️测试额度已用尽,请在设置中配置自己的账号")
+    return new Response("🙏 请看下方说明，并在设置处填入您的API KEY")
   }
 
   const prompt = prompts.find((item) => item.role == setting.role)?.prompt || setting.customRule;
