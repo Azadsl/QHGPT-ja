@@ -85,7 +85,7 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
         <div class="flex items-center justify-end px-3 mb-2">
           <div onClick={onRetry} class="flex items-center gap-1 px-2 py-0.5 op-70 border border-slate rounded-md text-sm cursor-pointer hover:bg-slate/10">
             <IconRefresh />
-            <span>Regenerate</span>
+            <span>轮转</span>
           </div>
         </div>
       )}
