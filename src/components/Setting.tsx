@@ -40,7 +40,7 @@ export default function Setting(props: {
         <SettingItem icon="i-carbon:api" label="OpenAI API Key">
           <input
             type="password"
-            placeholder="必需，自备"
+            placeholder="必需，请自备"
             value={props.setting().openaiAPIKey}
             class="max-w-150px ml-1em px-1 text-slate rounded-sm bg-slate bg-op-15 focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:text-slate-400 placeholder:op-30"
             onInput={e => {
