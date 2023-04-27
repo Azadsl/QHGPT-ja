@@ -235,7 +235,7 @@ export default () => {
       <div>
         <div class="swiper">
           <div class="swiper-wrapper">
-            <For each={roles()} fallback={<div>猫娘加载中...</div>}>
+            <For each={roles()} fallback={<div>请深呼吸等待...</div>}>
               {(item) => <div
                 classList={{ selected: currentRole().role === item.role }}
                 onClick={() => {
