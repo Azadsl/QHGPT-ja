@@ -32,7 +32,7 @@ export default function Setting(props: {
           }}
         >
           <IconEnv />
-          <span ml-1>设置</span>
+          <span ml-1>拈花</span>
         </div>
       </div>
       <hr class="mt-2 bg-slate-5 bg-op-15 border-none h-1px"></hr>
@@ -40,7 +40,7 @@ export default function Setting(props: {
         <SettingItem icon="i-carbon:api" label="OpenAI API Key">
           <input
             type="password"
-            placeholder="必需，请自备"
+            placeholder="必需，请自备或看下方说明"
             value={props.setting().openaiAPIKey}
             class="max-w-150px ml-1em px-1 text-slate rounded-sm bg-slate bg-op-15 focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:text-slate-400 placeholder:op-30"
             onInput={e => {
