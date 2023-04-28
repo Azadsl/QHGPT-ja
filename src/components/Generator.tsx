@@ -287,9 +287,9 @@ export default () => {
           <textarea
             ref={inputRef!}
             onKeyDown={handleKeydown}
-            placeholder="点击佛陀头像，开启与佛对话..."
+            placeholder="点击头像，开启对话..."
             autocomplete="off"
-            autofocus
+            
             onInput={() => {
               inputRef.style.height = 'auto';
               inputRef.style.height = inputRef.scrollHeight + 'px';
