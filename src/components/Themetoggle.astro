@@ -32,11 +32,11 @@
 </style>
 
 <script>
-  const darkSchema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const darkSchema = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
   document.documentElement.classList.toggle('dark', true)
 
   const listenColorSchema = () => {
-    const colorSchema = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchema = window.matchMedia('(prefers-color-scheme: light)')
     colorSchema.addEventListener('change', () => {
       document.documentElement.classList.toggle('dark', colorSchema.matches)
     })
