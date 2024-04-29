@@ -4,7 +4,7 @@ import { verifySignature } from '@/utils/auth'
 const demoKey = import.meta.env.DEMOKEY;
 import prompts from "@/prompts"
 
-const baseUrl = 'https://chat.smnet1.asia/api/openai';
+const baseUrl = 'https://api.wochirou.com';
 
 
 
@@ -32,7 +32,7 @@ export const post: APIRoute = async (context) => {
 
   // 限制免费key的请求字数
   if (sk == demoKey) {
-    return new Response("🙏 请看下方说明，并在设置处填入您的API KEY")
+    return new Response("🙏 请看下方说明，并在设置处填入 API KEY")
   }
 
   const prompt = prompts.find((item) => item.role == setting.role)?.prompt || setting.customRule;
