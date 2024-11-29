@@ -4,7 +4,7 @@ import { verifySignature } from '@/utils/auth'
 const demoKey = import.meta.env.DEMOKEY;
 import prompts from "@/prompts"
 
-const baseUrl = 'https://api.wochirou.com';
+const baseUrl = 'https://api.cymru';
 
 
 
