@@ -37,7 +37,7 @@ export default function Setting(props: {
       </div>
       <hr class="mt-2 bg-slate-5 bg-op-15 border-none h-1px"></hr>
       <Show when={shown()}>
-        <SettingItem icon="i-carbon:api" label="OpenAI API Key">
+        <SettingItem icon="i-carbon:api" label="API Key">
           <input
             type="password"
             placeholder="必需，请看下方说明"
