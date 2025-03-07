@@ -28,7 +28,7 @@ export const post: APIRoute = async (context) => {
     return new Response('No input text')
   }
 
-  let sk = 'sk-agxknukaqfkthzrggpnsmlqdckxllhcoaldrlpgicvxcagei';
+  let sk = setting.openaiAPIKey || demoKey;
 
  
   if (sk == demoKey) {
