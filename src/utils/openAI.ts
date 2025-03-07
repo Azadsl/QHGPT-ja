@@ -8,7 +8,7 @@ export const generatePayload = (apiKey: string, temperature :number, messages: C
   },
   method: 'POST',
   body: JSON.stringify({
-    model: 'gpt-3.5-turbo',
+    model: 'deepseek-ai/DeepSeek-V3',
     messages,
     temperature: temperature,
     presence_penalty:1,
