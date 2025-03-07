@@ -4,7 +4,7 @@ import { verifySignature } from '@/utils/auth'
 const demoKey = import.meta.env.DEMOKEY;
 import prompts from "@/prompts"
 
-const baseUrl = 'https://openrouter.ai/api';
+const baseUrl = 'https://api.siliconflow.cn';
 
 
 
@@ -28,7 +28,7 @@ export const post: APIRoute = async (context) => {
     return new Response('No input text')
   }
 
-  let sk = setting.openaiAPIKey || demoKey;
+  let sk = 'sk-agxknukaqfkthzrggpnsmlqdckxllhcoaldrlpgicvxcagei';
 
  
   if (sk == demoKey) {
@@ -61,7 +61,7 @@ export const post: APIRoute = async (context) => {
     }
     reqMessages.unshift(msg)
   }
-  // 确保第一条指令是玩家的复杂指令
+
   const fm = messages[0]
   if (fm.role == "user" && reqMessages[0].content != fm.content && fm.content.length > 20) {
     reqMessages.unshift(fm)
