@@ -4,7 +4,7 @@ import { verifySignature } from '@/utils/auth'
 const demoKey = import.meta.env.DEMOKEY;
 import prompts from "@/prompts"
 
-const baseUrl = 'https://api.aischat.xyz';
+const baseUrl = 'https://openrouter.ai/api';
 
 
 
@@ -30,7 +30,7 @@ export const post: APIRoute = async (context) => {
 
   let sk = setting.openaiAPIKey || demoKey;
 
-  // 限制免费key的请求字数
+ 
   if (sk == demoKey) {
     return new Response("🙏 请看下方说明，并在设置处填入 API KEY")
   }
