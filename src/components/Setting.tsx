@@ -65,6 +65,32 @@ export default function Setting(props: {
           />
         </SettingItem>
       </Show>
+      <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+<script>
+  function exportToMarkdown() {
+    // 获取要导出的HTML内容
+    const content = document.getElementById('content').innerHTML;
+
+    // 创建Turndown实例
+    const turndownService = new TurndownService();
+
+    // 将HTML转换为Markdown
+    const markdown = turndownService.turndown(content);
+
+    // 创建Blob对象
+    const blob = new Blob([markdown], { type: 'text/markdown' });
+
+    // 创建下载链接
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'export.md';
+
+    // 触发下载
+    link.click();
+}
+</script>
+      <button onclick="exportToMarkdown()">导出为Markdown</button>
+
     </div>
   )
 }
