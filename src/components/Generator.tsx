@@ -1,7 +1,7 @@
 import type { ChatMessage } from '@/types';
 import { createSignal, Index, Show, createEffect, onMount, For } from 'solid-js';
 import IconClear from './icons/Clear';
-import Iconmd from './icons/md';
+import IconMarkdown from './icons/Markdown';
 import MessageItem from './MessageItem';
 import Setting from "./Setting";
 import _ from 'lodash';
@@ -318,7 +318,7 @@ export default () => {
             <IconClear />
           </button>
           <button title="导出Markdown" onClick={exportToMarkdown} class="h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm">
-            <Iconmd />
+            <IconMarkdown />
           </button>
         </div>
       </Show>
