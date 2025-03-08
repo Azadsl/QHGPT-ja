@@ -299,7 +299,7 @@ export default () => {
         )}
       >
         <div class="my-4 flex items-center gap-2 transition-opacity">
-          <button title="清除对话" onClick={clear} class="h-12 px-1 py-2 bg-op-15 hover:bg-op-20 transition-all duration-200">
+          <button title="清除对话" onClick={clear} class="h-12 px-2 py-2 bg-slate bg-op-15 rounded-lg hover:bg-slate-50 transition-all duration-200">
             <IconClear />
           </button>
           <textarea
