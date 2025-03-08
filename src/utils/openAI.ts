@@ -8,7 +8,7 @@ export const generatePayload = (apiKey: string, temperature :number, messages: C
   },
   method: 'POST',
   body: JSON.stringify({
-    model: 'Pro/THUDM/glm-4-9b-chat',
+    model: 'deepseek-ai/DeepSeek-V3',
     messages,
     temperature: temperature,
     presence_penalty:1,
