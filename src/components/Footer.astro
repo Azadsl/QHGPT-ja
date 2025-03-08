@@ -154,7 +154,7 @@ oPlay.style.height = 23 + "px";
             position: absolute;
             width: 100%;
             height: 100px; /* 增加高度给文字浮动空间 */
-            top: -20px; /* 调整位置在木鱼上方 */
+            top: -22px; /* 调整位置在木鱼上方 */
             left: 0;
             pointer-events: none;
             text-align: center;
@@ -162,14 +162,11 @@ oPlay.style.height = 23 + "px";
         .gongde-text {
             position: absolute;
             white-space: nowrap;
-            color: #e0e0e0; /* 使用与页面其他元素相匹配的颜色 */
-            font-size: 6px; /* 增加字体大小 */
-            font-weight: bold;
+            color: #e0e0e0;
+            font-size: 6px;
             font-family: Arial, sans-serif;
             animation: floatUp 1s forwards;
             text-shadow: 0 0 2px white;
-            left: 50%;
-            transform: translateX(-50%);
         }
         @keyframes floatUp {
             0% {
@@ -190,33 +187,41 @@ oPlay.style.height = 23 + "px";
     </div>
     <!-- 添加音频元素 -->
     <audio id="knockSound" src="muyu.mp3"></audio>
-    <script>
+   <script>
         const muyu = document.querySelector('.muyu');
         const gongdeContainer = document.getElementById('gongdeContainer');
         let audio = document.getElementById('knockSound');
+        
         // 修复iOS等设备需要用户交互后才能播放的问题
         let isAudioReady = false;
+
         function initAudio() {
             // 重新创建音频对象确保可以循环播放
             audio = new Audio('muyu.mp3');
             audio.load();
             isAudioReady = true;
         }
+
         function createGongdeText() {
             const text = document.createElement('div');
             text.className = 'gongde-text';
-            text.textContent = '功德 +1';
+            text.textContent = '功德 加一';
+            
             const offsetX = Math.random() * 40 - 20;
             text.style.left = `${offsetX}px`;
+            
             gongdeContainer.appendChild(text);
+            
             setTimeout(() => {
                 text.remove();
             }, 1000);
         }
+
         function playKnockSound() {
             if (!isAudioReady) {
                 initAudio();
             }
+            
             try {
                 // 重置播放进度
                 audio.currentTime = 0;
@@ -225,21 +230,25 @@ oPlay.style.height = 23 + "px";
                 console.log('音频播放失败，请检查浏览器设置');
             }
         }
+
         // 统一点击处理函数
         function handleKnock() {
             muyu.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 muyu.style.transform = 'scale(1)';
             }, 100);
+            
             createGongdeText();
             playKnockSound();
         }
+
         // 事件监听
         muyu.addEventListener('click', handleKnock);
         muyu.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleKnock();
         });
+
         // 首次触摸事件初始化音频
         document.addEventListener('touchstart', initAudio, { once: true });
         document.addEventListener('click', initAudio, { once: true });
