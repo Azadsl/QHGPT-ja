@@ -314,6 +314,26 @@ export default () => {
             卍
           </button>
           <button title="清除对话" onClick={clear} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+              <button onclick="exportToMarkdown()">导出为Markdown</button>
+    <script>
+        function exportToMarkdown() {
+            // 获取要导出的HTML内容
+            const content = document.getElementById('content').innerHTML;
+            // 创建Turndown实例
+            const turndownService = new TurndownService();
+            // 将HTML转换为Markdown
+            const markdown = turndownService.turndown(content);
+            // 创建Blob对象
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'export.md';
+            // 触发下载
+            link.click();
+        }
+    </script>
+
             <IconClear />
           </button>
         </div>
