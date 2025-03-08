@@ -88,7 +88,64 @@ const initTheme = () => {
 
 initTheme()
 </script>
-      
+
+
+
+
+
+
+
+      <button onclick="stopp()" style="
+  position: fixed;
+  z-index: 999999;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(145deg, #f8e1e3, #faeaec);
+  color: #6a1a21;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+">
+  <svg t="1741420050225" class="icon" viewBox="0 0 1049 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1828" width="24" height="24">
+    <path d="M525.584 573.347s268.831-2.63 309.364 193.243l-76.465 21.91 12.927 84.132a214.057 214.057 0 0 1-96.84-4.82a224.793 224.793 0 0 1-148.986-289.426z" fill="#EFC0C4" p-id="1829"></path>
+    <path d="M552.752 512.438S684.21 278.663 874.385 341.543l-20.157 77.122 79.313 30.893a215.59 215.59 0 0 1-52.583 81.503a224.574 224.574 0 0 1-325.358-14.68z" fill="#EFC0C4" p-id="1830"></path>
+    <path d="M508.494 494.034s-191.49-187.546-81.722-354.717l69.453 38.78 51.269-68.796a214.057 214.057 0 0 1 65.728 71.864a225.012 225.012 0 0 1-98.374 310.678z" fill="#EFC0C4" p-id="1831"></path>
+    <path d="M473.22 525.584s-230.927 136.059-363.919-13.146l55.431-57.184-53.459-65.729a213.619 213.619 0 0 1 86.324-43.819a224.793 224.793 0 0 1 274.527 175.277z" fill="#EFC0C4" p-id="1832"></path>
+    <path d="M481.765 566.555s72.082 258.314-106.481 348.144l-40.314-68.14-78.217 34.18a212.304 212.304 0 0 1-20.157-94.65a224.574 224.574 0 0 1 241.006-219.096z" fill="#EFC0C4" p-id="1833"></path>
+  </svg>
+  <span>散华</span>
+</button>
+
+<style>
+  button[onclick="stopp()"] {
+    background: linear-gradient(145deg, #f8e1e3, #faeaec);
+    color: #6a1a21;
+    transition: all 0.2s ease;
+  }
+  
+  button[onclick="stopp()"]:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  button[onclick="stopp()"]:active {
+    transform: translateY(-50%) scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(145deg, #ebd2d4, #f0dfe1);
+  }
+</style>
+
+
+
 <script type="text/javascript">
       if (! (navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i))) {
       var stop, staticx;
@@ -243,4 +300,5 @@ initTheme()
           }
       }
       }
-    </script>
+
+</script>
