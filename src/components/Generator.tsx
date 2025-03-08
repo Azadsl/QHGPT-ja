@@ -311,10 +311,10 @@ export default () => {
             rows="1"
             class="w-full px-3 py-3 min-h-12 max-h-36 rounded-sm bg-slate bg-op-15 resize-none focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:op-50 dark:placeholder:op-30"
           />
-          <button onClick={handleButtonClick} class="h-12 px-3 py-2 bg-slate bg-op-15 rounded-lg hover:bg-slate-50 transition-all duration-200">
+          <button onClick={handleButtonClick} class="h-12 px-2 py-2 bg-slate bg-op-15 rounded-lg hover:bg-slate-50 transition-all duration-200">
             <svg t="1741404073185" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1758" width="16" height="16"><path d="M0 438.857143h1024v146.285714H0z" p-id="1759" fill="#b8976d"></path><path d="M438.857143 0h146.285714v1024H438.857143z" p-id="1760" fill="#b8976d"></path><path d="M0 0h585.142857v146.285714H0zM438.857143 877.714286h585.142857v146.285714H438.857143zM877.714286 0h146.285714v585.142857h-146.285714zM0 438.857143h146.285714v585.142857H0z" p-id="1761" fill="#b8976d"></path></svg>
           </button>
-          <button title="清除对话" onClick={clear} class="h-12 px-3 py-2 bg-slate bg-op-15 rounded-lg hover:bg-slate-50 transition-all duration-200">
+          <button title="清除对话" onClick={clear} class="h-12 px-2 py-2 bg-slate bg-op-15 rounded-lg hover:bg-slate-50 transition-all duration-200">
             <IconClear />
           </button>
           <button title="导出Markdown" onClick={exportToMarkdown} class="h-12 px-1 py-2 bg-op-15 hover:bg-op-20 transition-all duration-200">
