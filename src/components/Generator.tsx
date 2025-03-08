@@ -311,10 +311,10 @@ export default () => {
             rows="1"
             class="w-full px-3 py-3 min-h-12 max-h-36 rounded-sm bg-slate bg-op-15 resize-none focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:op-50 dark:placeholder:op-30"
           />
-          <button onClick={handleButtonClick} class="h-12 px-3 py-2 bg-slate bg-op-15 rounded-lg shadow hover:bg-slate-700 transition-all duration-200">
+          <button onClick={handleButtonClick} class="h-12 px-3 py-2 bg-slate bg-op-15 rounded-lg shadow hover:bg-slate-100 transition-all duration-200">
             卍
           </button>
-          <button title="清除对话" onClick={clear} class="h-12 px-3 py-2 bg-op-15 rounded-lg shadow hover:bg-slate-700 transition-all duration-200">
+          <button title="清除对话" onClick={clear} class="h-12 px-3 py-2 bg-slate bg-op-15 rounded-lg shadow hover:bg-slate-100 transition-all duration-200">
             <IconClear />
           </button>
           <button title="导出Markdown" onClick={exportToMarkdown} class="h-12 px-3 py-2 bg-op-15 hover:bg-op-20 rounded-sm">
