@@ -318,7 +318,7 @@ export default () => {
             <IconClear />
           </button>
           <button title="导出Markdown" onClick={exportToMarkdown} class="h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm">
-            <IconMarkdown />
+            <IconClear />
           </button>
         </div>
       </Show>
