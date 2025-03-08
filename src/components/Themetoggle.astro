@@ -1,4 +1,4 @@
-<button id="themeToggle" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10">
+<button id="themeToggle" class="flex w-10 h-10 rounded-md border transition-colors hover:bg-slate/10">
   <svg width="1.2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path
       class="sun"
@@ -28,6 +28,9 @@
   }
   :global(html.dark) .moon {
     fill: white;
+  }
+button[onclick="stopp()"] {
+    border: 0;
   }
 </style>
 
