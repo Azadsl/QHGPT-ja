@@ -98,12 +98,27 @@ export default () => {
     requestWithLatestMessage();
   };
 
-  const throttle = _.throttle(function () {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }, 300, {
-    leading: true,
-    trailing: false
-  });
+// 智能滚动判断
+const smartScroll = () => {
+  const isNearBottom = 
+    window.innerHeight + window.scrollY >= 
+    document.body.scrollHeight - window.innerHeight * 0.2;
+
+  if (isNearBottom) {
+    requestAnimationFrame(() => {
+      scrollAnchor?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    });
+  }
+};
+
+// 在以下位置调用
+while (!done) {
+  // ...
+  smartScroll(); 
+}
 
   const requestWithLatestMessage = async () => {
     setLoading(true);
