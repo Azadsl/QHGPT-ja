@@ -20,13 +20,14 @@ export interface Role {
 
 export default () => {
   let inputRef: HTMLTextAreaElement;
-  let messageContainerRef: HTMLDivElement;
+  let messagesEndRef: HTMLDivElement;
   const [messageList, setMessageList] = createSignal<ChatMessage[]>([]);
   const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('');
   const [loading, setLoading] = createSignal(false);
   const [controller, setController] = createSignal<AbortController>(null);
   const [currentRole, setCurrentRole] = createSignal<Role>({ role: '', avatar: '', fc: '' });
   const [roles, setRoles] = createSignal<Role[]>([]);
+  const [autoScroll, setAutoScroll] = createSignal(true);
 
   const defaultSetting = {
     openaiAPIKey: "",
@@ -55,6 +56,17 @@ export default () => {
     const response = await fetch('/api/generate');
     let roles = await response.json();
     setRoles([...roles]);
+    
+    // Set up scroll detection
+    const handleScroll = _.throttle(() => {
+      const scrolledToBottom = 
+        window.innerHeight + window.scrollY >= 
+        document.body.offsetHeight - 100;
+      setAutoScroll(scrolledToBottom);
+    }, 200);
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   });
 
   // 保存历史配置
@@ -83,6 +95,20 @@ export default () => {
     });
   });
 
+  // Modified scroll effect to use only when user is at bottom of page
+  createEffect(() => {
+    if (currentAssistantMessage() && autoScroll()) {
+      const smoothScroll = () => {
+        if (messagesEndRef) {
+          messagesEndRef.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      };
+      
+      // Use requestAnimationFrame to avoid layout thrashing
+      requestAnimationFrame(smoothScroll);
+    }
+  });
+
   const handleButtonClick = async () => {
     const inputValue = inputRef.value;
     if (!inputValue) {
@@ -96,23 +122,10 @@ export default () => {
         content: inputValue,
       },
     ]);
+    // Set auto-scroll to true when user sends a message
+    setAutoScroll(true);
     requestWithLatestMessage();
   };
-
-const throttle = _.throttle(function () {
-  // 只在接近底部时才滚动
-  const isNearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 100;
-  
-  if (isNearBottom) {
-    window.scrollTo({ 
-      top: document.body.scrollHeight, 
-      behavior: 'auto' // 改为'auto'而不是'smooth'
-    });
-  }
-}, 500, { // 增加节流延迟到500ms
-  leading: true,
-  trailing: true // 启用尾部执行
-});
 
   const requestWithLatestMessage = async () => {
     setLoading(true);
@@ -154,9 +167,6 @@ const throttle = _.throttle(function () {
       const decoder = new TextDecoder('utf-8');
       let done = false;
 
-      // 初始滚动一次
-      scrollToBottom();
-
       while (!done) {
         const { value, done: readerDone } = await reader.read();
         if (value) {
@@ -167,8 +177,6 @@ const throttle = _.throttle(function () {
           if (char) {
             setCurrentAssistantMessage(currentAssistantMessage() + char);
           }
-          // 使用修改后的滚动函数
-          scrollToBottom();
         }
         done = readerDone;
       }
@@ -244,7 +252,7 @@ const throttle = _.throttle(function () {
 
     const markdown = markdownLines.join('\n\n');
     const blob = new Blob([markdown], { type: 'text/markdown' });
-  
+    
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = 'chat_export.md';
@@ -282,32 +290,28 @@ const throttle = _.throttle(function () {
         </div>
       </div>
       
-      {/* 消息容器，使用固定高度和滚动条 */}
-      <div 
-        ref={messageContainerRef!} 
-        class="message-container" 
-        style="height: 70vh; overflow-y: auto; padding-bottom: 10px;"
-      >
-        <Index each={messageList()}>
-          {(message, index) => (
-            <MessageItem
-              role={message().role}
-              message={message().content}
-              assistantAvatar={currentRole().avatar}
-              showRetry={() => (message().role === 'assistant' && index === messageList().length - 1)}
-              onRetry={retryLastFetch}
-            />
-          )}
-        </Index>
-
-        {currentAssistantMessage() && (
+      <Index each={messageList()}>
+        {(message, index) => (
           <MessageItem
-            role="assistant"
+            role={message().role}
+            message={message().content}
             assistantAvatar={currentRole().avatar}
-            message={currentAssistantMessage}
+            showRetry={() => (message().role === 'assistant' && index === messageList().length - 1)}
+            onRetry={retryLastFetch}
           />
         )}
-      </div>
+      </Index>
+
+      {currentAssistantMessage() && (
+        <MessageItem
+          role="assistant"
+          assistantAvatar={currentRole().avatar}
+          message={currentAssistantMessage}
+        />
+      )}
+      
+      {/* Hidden reference element for scrolling */}
+      <div ref={messagesEndRef} style="height: 0px; width: 100%;"></div>
 
       <Show
         when={!loading()}
@@ -319,7 +323,7 @@ const throttle = _.throttle(function () {
         )}
       >
         <div class="my-4 flex items-center gap-2 transition-opacity">
-          <button title="清除对话" onClick={clear} class="h-12 px-2 py-2 bg-slate bg-op-15 rounded-lg hover:bg-slate-50 transition-all duration-200">
+          <button title="清除对话" onClick={clear} class="h-12 px-1 py-2 bg-op-15 hover:bg-op-20 transition-all duration-200">
             <IconClear />
           </button>
           <textarea
