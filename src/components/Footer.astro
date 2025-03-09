@@ -133,7 +133,7 @@ oPlay.style.height = 23 + "px";
   />
   
   <!-- 电子木鱼代码开始 -->
-  <div style="margin-top: 30px; margin-bottom: 10px; display: flex; justify-content: center;">
+  <div style="margin-top: 30px; margin-bottom: 10px; display: flex; gap: 6px; justify-content: center;">
     <style>
         .muyu-container {
             cursor: pointer;
@@ -193,17 +193,6 @@ oPlay.style.height = 23 + "px";
             audio = new Audio('muyu.mp3');
             audio.load();
             isAudioReady = true;
-        }
-        function createGongdeText() {
-            const text = document.createElement('div');
-            text.className = 'gongde-text';
-            text.textContent = '功德 +1';
-            const offsetX = Math.random() * 40 - 20;
-            text.style.left = `${offsetX}px`;
-            gongdeContainer.appendChild(text);
-            setTimeout(() => {
-                text.remove();
-            }, 1000);
         }
         function playKnockSound() {
             if (!isAudioReady) {
