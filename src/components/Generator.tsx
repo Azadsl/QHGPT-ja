@@ -305,7 +305,7 @@ export default () => {
           <textarea
             ref={inputRef!}
             onKeyDown={handleKeydown}
-            placeholder="点击头像，开启对话..."
+            placeholder="点击头像开启对话"
             autocomplete="off"
             onInput={() => {
               inputRef.style.height = 'auto';
