@@ -2,7 +2,6 @@
 
 
 
-
 <!-- 烟雾效果部分 -->
 <section class="fog" id="fogEffect">
   <figure class="absolute-bg"></figure>
@@ -12,6 +11,8 @@
     <div class="fog__img fog__img--second-1"></div>
     <div class="fog__img fog__img--second-2"></div>
   </div>
+</section>
+
 <style>
 body, html {
   margin: 0;
@@ -19,7 +20,9 @@ body, html {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  position: relative;
 }
+
 .absolute-bg {
   position: absolute;
   top: 0;
@@ -32,11 +35,12 @@ body, html {
   background-size: cover;
   overflow: hidden;
 }
+
 .fog {
   position: fixed;
-  top: -10vh; /* 向上延伸超出屏幕 */
+  top: -20vh; /* 更大的负值确保覆盖顶部 */
   left: 0;
-  height: 120vh; /* 增加高度确保覆盖 */
+  height: 140vh; /* 更大的高度确保覆盖 */
   width: 100%;
   background-color: transparent;
   z-index: -1;
@@ -47,54 +51,57 @@ body, html {
 
 .fog__container {
   position: absolute;
-  height: 120%; /* 增加高度 */
+  height: 140%; /* 增加高度 */
   width: 100%;
   overflow: hidden;
 }
 
 .fog__img {
   position: absolute;
-  height: 120vh; /* 增加高度 */
+  height: 140vh; /* 增加高度 */
   width: 300vw;
   will-change: transform;
   transform: translate3d(0, 0, 0);
+  background-size: cover !important; /* 改为cover而不是contain */
 }
 
-/* 为每张图片创建两个实例实现无缝循环 */
 .fog__img--first-1 {
   background: url("fog-1.png") repeat-x;
-  background-size: contain;
   background-position: center;
   animation: marquee1 120s linear infinite;
   left: 0;
+  top: 0;
 }
+
 .fog__img--first-2 {
   background: url("fog-1.png") repeat-x;
-  background-size: contain;
   background-position: center;
   animation: marquee2 120s linear infinite;
   left: 0;
+  top: 0;
 }
+
 .fog__img--second-1 {
   background: url("fog-2.png") repeat-x;
-  background-size: contain;
   background-position: center;
   animation: marquee1 80s linear infinite;
   left: 0;
+  top: 0;
 }
+
 .fog__img--second-2 {
   background: url("fog-2.png") repeat-x;
-  background-size: contain;
   background-position: center;
   animation: marquee2 80s linear infinite;
   left: 0;
+  top: 0;
 }
 
-/* 两部分动画创建无缝循环 */
 @keyframes marquee1 {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-100%, 0, 0); }
 }
+
 @keyframes marquee2 {
   0% { transform: translate3d(100%, 0, 0); }
   100% { transform: translate3d(0, 0, 0); }
@@ -107,22 +114,37 @@ body, html {
   z-index: 100;
   cursor: pointer;
 }
+
 .toggle-icon {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
+
 .fog-off-icon {
   display: none;
 }
+
 .toggle-container.active .fog-on-icon {
   display: none;
 }
+
 .toggle-container.active .fog-off-icon {
   display: block;
 }
+
+/* 移动设备专用样式 */
+@media only screen and (max-width: 768px) {
+  .fog {
+    top: -30vh;
+    height: 160vh;
+  }
+  
+  .fog__img {
+    height: 160vh;
+  }
+}
 </style>
-</section>
 <!-- 图标开关 -->
 <div class="toggle-container" id="fogToggle">
   <div class="toggle-icon">
@@ -145,22 +167,44 @@ function preloadImages() {
   });
 }
 
+// 调整烟雾元素以完全覆盖屏幕
+function adjustFogSize() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  
+  // 根据设备高度调整烟雾覆盖
+  if (window.innerWidth <= 768) {
+    // 移动设备
+    fogEffect.style.top = '-30vh';
+    fogEffect.style.height = '160vh';
+  } else {
+    // 桌面设备
+    fogEffect.style.top = '-20vh';
+    fogEffect.style.height = '140vh';
+  }
+}
+
 // 点击图标切换烟雾效果
 fogToggle.addEventListener('click', function() {
   fogEnabled = !fogEnabled;
   if (fogEnabled) {
     fogEffect.style.display = 'block';
     fogToggle.classList.add('active');
+    adjustFogSize(); // 调整尺寸确保覆盖
   } else {
     fogEffect.style.display = 'none';
     fogToggle.classList.remove('active');
   }
 });
 
-// 在页面加载完成后预加载图片
-window.addEventListener('load', preloadImages);
-</script>
+// 在页面加载和窗口尺寸变化时调整烟雾尺寸
+window.addEventListener('load', function() {
+  preloadImages();
+  adjustFogSize();
+});
 
+window.addEventListener('resize', adjustFogSize);
+</script>
 
 
 
