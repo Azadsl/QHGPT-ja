@@ -133,19 +133,19 @@ oPlay.style.height = 23 + "px";
   />
   
   <!-- 电子木鱼代码开始 -->
- <div style="margin-top: 30px; margin-bottom: 10px; display: flex; gap: 6px; justify-content: center;">
+<div style="margin-top: 30px; margin-bottom: 10px; display: flex; gap: 6px; justify-content: center;">
     <style>
-        .muyu-container, .qing-container {
+        .muyu-container, .qing-container, .fengling-container {
             cursor: pointer;
             transition: transform 0.1s;
             text-align: center;
         }
-        .muyu, .qing {
+        .muyu, .qing, .fengling {
             width: 40px;
             height: 40px;
             filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
         }
-        .muyu:active, .qing:active {
+        .muyu:active, .qing:active, .fengling:active {
             transform: scale(0.95);
         }
         @keyframes floatUp {
@@ -168,35 +168,41 @@ oPlay.style.height = 23 + "px";
     <div class="qing-container">
         <img class="qing" src="qing.png">
     </div>
+    <div class="fengling-container">
+        <img class="fengling" src="fengling.png">
+    </div>
 
     <!-- 添加音频元素 -->
     <audio id="muyuSound" src="muyu.mp3"></audio>
     <audio id="qingSound" src="qing.mp3"></audio>
+    <audio id="fenglingSound" src="fengling.mp3"></audio>
     
     <script>
         const muyu = document.querySelector('.muyu');
         const qing = document.querySelector('.qing');
+        const fengling = document.querySelector('.fengling');
         const gongdeContainer = document.getElementById('gongdeContainer');
         
         let muyuAudio = document.getElementById('muyuSound');
         let qingAudio = document.getElementById('qingSound');
+        let fenglingAudio = document.getElementById('fenglingSound');
         
         // 修复iOS等设备需要用户交互后才能播放的问题
-        let isMuyuAudioReady = false;
-        let isQingAudioReady = false;
+        let isAudioReady = false;
         
         function initAudio() {
             // 重新创建音频对象确保可以循环播放
             muyuAudio = new Audio('muyu.mp3');
             qingAudio = new Audio('qing.mp3');
+            fenglingAudio = new Audio('fengling.mp3');
             muyuAudio.load();
             qingAudio.load();
-            isMuyuAudioReady = true;
-            isQingAudioReady = true;
+            fenglingAudio.load();
+            isAudioReady = true;
         }
         
         function playMuyuSound() {
-            if (!isMuyuAudioReady) {
+            if (!isAudioReady) {
                 initAudio();
             }
             try {
@@ -209,13 +215,26 @@ oPlay.style.height = 23 + "px";
         }
         
         function playQingSound() {
-            if (!isQingAudioReady) {
+            if (!isAudioReady) {
                 initAudio();
             }
             try {
                 // 重置播放进度
                 qingAudio.currentTime = 0;
                 qingAudio.play();
+            } catch (e) {
+                console.log('音频播放失败，请检查浏览器设置');
+            }
+        }
+        
+        function playFenglingSound() {
+            if (!isAudioReady) {
+                initAudio();
+            }
+            try {
+                // 重置播放进度
+                fenglingAudio.currentTime = 0;
+                fenglingAudio.play();
             } catch (e) {
                 console.log('音频播放失败，请检查浏览器设置');
             }
@@ -239,6 +258,15 @@ oPlay.style.height = 23 + "px";
             playQingSound();
         }
         
+        // 风铃点击处理函数
+        function handleFenglingKnock() {
+            fengling.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                fengling.style.transform = 'scale(1)';
+            }, 100);
+            playFenglingSound();
+        }
+        
         // 木鱼事件监听
         muyu.addEventListener('click', handleMuyuKnock);
         muyu.addEventListener('touchstart', (e) => {
@@ -251,6 +279,13 @@ oPlay.style.height = 23 + "px";
         qing.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleQingKnock();
+        });
+        
+        // 风铃事件监听
+        fengling.addEventListener('click', handleFenglingKnock);
+        fengling.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleFenglingKnock();
         });
         
         // 首次触摸事件初始化音频
