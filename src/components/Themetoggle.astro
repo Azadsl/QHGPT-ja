@@ -7,11 +7,11 @@
 <section class="fog" id="fogEffect">
   <figure class="absolute-bg"></figure>
   <div class="fog__container">
-    <div class="fog__img fog__img--first"></div>
-    <div class="fog__img fog__img--second"></div>
+    <div class="fog__img fog__img--first-1"></div>
+    <div class="fog__img fog__img--first-2"></div>
+    <div class="fog__img fog__img--second-1"></div>
+    <div class="fog__img fog__img--second-2"></div>
   </div>
-</section>
-
 <style>
 .absolute-bg {
   position: absolute;
@@ -47,27 +47,50 @@
   position: absolute;
   height: 100vh;
   width: 300vw;
+  will-change: transform; /* 提示浏览器优化动画 */
+  transform: translate3d(0, 0, 0); /* 启用硬件加速 */
 }
-.fog__img--first {
+
+/* 为每张图片创建两个实例实现无缝循环 */
+.fog__img--first-1 {
   background: url("fog-1.png") repeat-x;
   background-size: contain;
   background-position: center;
-  animation: marquee 60s linear infinite;
+  animation: marquee1 120s linear infinite;
+  left: 0;
 }
-.fog__img--second {
+.fog__img--first-2 {
+  background: url("fog-1.png") repeat-x;
+  background-size: contain;
+  background-position: center;
+  animation: marquee2 120s linear infinite;
+  left: 0;
+}
+.fog__img--second-1 {
   background: url("fog-2.png") repeat-x;
   background-size: contain;
   background-position: center;
-  animation: marquee 40s linear infinite;
+  animation: marquee1 80s linear infinite;
+  left: 0;
 }
-@keyframes marquee {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-200vw, 0, 0);
-  }
+.fog__img--second-2 {
+  background: url("fog-2.png") repeat-x;
+  background-size: contain;
+  background-position: center;
+  animation: marquee2 80s linear infinite;
+  left: 0;
 }
+
+/* 两部分动画创建无缝循环 */
+@keyframes marquee1 {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
+}
+@keyframes marquee2 {
+  0% { transform: translate3d(100%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
 .toggle-container {
   position: fixed;
   top: 20px;
@@ -77,8 +100,8 @@
 }
 .toggle-icon {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
 }
 .fog-off-icon {
   display: none;
@@ -90,6 +113,7 @@
   display: block;
 }
 </style>
+</section>
 <!-- 图标开关 -->
 <div class="toggle-container" id="fogToggle">
   <div class="toggle-icon">
@@ -102,6 +126,16 @@
 const fogEffect = document.getElementById('fogEffect');
 const fogToggle = document.getElementById('fogToggle');
 let fogEnabled = false;
+
+// 预加载图片以提高性能
+function preloadImages() {
+  const imageUrls = ['fog-1.png', 'fog-2.png'];
+  imageUrls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
+}
+
 // 点击图标切换烟雾效果
 fogToggle.addEventListener('click', function() {
   fogEnabled = !fogEnabled;
@@ -113,8 +147,10 @@ fogToggle.addEventListener('click', function() {
     fogToggle.classList.remove('active');
   }
 });
-</script>
 
+// 在页面加载完成后预加载图片
+window.addEventListener('load', preloadImages);
+</script>
 
 
 
