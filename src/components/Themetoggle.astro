@@ -27,9 +27,9 @@
 }
 .fog {
   position: fixed;
-  top: 0;
+  top: -10vh; /* 向上延伸超出屏幕 */
   left: 0;
-  height: 100vh;
+  height: 120vh; /* 增加高度确保覆盖 */
   width: 100%;
   background-color: transparent;
   z-index: -1;
@@ -37,18 +37,20 @@
   pointer-events: none;
   display: none;
 }
+
 .fog__container {
   position: absolute;
-  height: 100%;
+  height: 120%; /* 增加高度 */
   width: 100%;
   overflow: hidden;
 }
+
 .fog__img {
   position: absolute;
-  height: 100vh;
+  height: 120vh; /* 增加高度 */
   width: 300vw;
-  will-change: transform; /* 提示浏览器优化动画 */
-  transform: translate3d(0, 0, 0); /* 启用硬件加速 */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 /* 为每张图片创建两个实例实现无缝循环 */
