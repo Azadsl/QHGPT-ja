@@ -104,8 +104,12 @@ oPlay.style.height = 23 + "px";
     </a>
   </p>
   <p mt-8 text-xs op-30>
-    <span pr-1>说明：</span>
-  </p>
+  <button id="toggleExplanation" style="background: none; border: none; padding: 0; font-size: inherit; color: inherit; cursor: pointer; display: flex; align-items: center;">
+    <span>说明：</span>
+    <span id="toggleIcon" style="margin-left: 4px;">▼</span>
+  </button>
+</p>
+<div id="explanationText" hidden>
   <p mt-3 text-xs op-30>
     <span pr-1>1. 对话前请在 <strong>"拈花" </strong>API Key 处填入 您的<a
       b-slate-link
@@ -122,6 +126,16 @@ oPlay.style.height = 23 + "px";
    <p mt-3 text-xs op-30>
     4. 无论如何，请保持平和、欢喜与慈悲。如佛经所言： <strong>"应无所住，而生其心"</strong>。
   </p>
+</div>
+
+<script>
+  document.getElementById('toggleExplanation').addEventListener('click', function() {
+    const explanationText = document.getElementById('explanationText');
+    const toggleIcon = document.getElementById('toggleIcon');
+    explanationText.hidden = !explanationText.hidden;
+    toggleIcon.textContent = explanationText.hidden ? '▼' : '▲';
+  });
+</script>
   <br>
   <link
     rel="stylesheet"
