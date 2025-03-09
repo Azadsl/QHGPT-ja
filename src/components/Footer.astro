@@ -133,18 +133,19 @@ oPlay.style.height = 23 + "px";
   />
   
   <!-- 电子木鱼代码开始 -->
-  <div style="margin-top: 30px; margin-bottom: 10px; display: flex; gap: 6px; justify-content: center;">
+ <div style="margin-top: 30px; margin-bottom: 10px; display: flex; gap: 6px; justify-content: center;">
     <style>
-        .muyu-container {
+        .muyu-container, .qing-container {
             cursor: pointer;
             transition: transform 0.1s;
+            text-align: center;
         }
-        .muyu {
+        .muyu, .qing {
             width: 40px;
             height: 40px;
             filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
         }
-        .muyu:active {
+        .muyu:active, .qing:active {
             transform: scale(0.95);
         }
         @keyframes floatUp {
@@ -158,56 +159,104 @@ oPlay.style.height = 23 + "px";
             }
         }
     </style>
-    <div class="muyu-container" style="text-align: center;">
-        <div class="gongde-container" id="gongdeContainer" style="text-align: center;"></div>
+    <div class="muyu-container">
+        <div class="gongde-container" id="gongdeContainer"></div>
         <svg class="muyu" viewBox="0 0 1365 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path d="M84.60774739 747.89580078c-8.94287109 56.47412109 31.66875 88.91191406 52.40654297 98.75566406 20.73691406 9.82441406 55.61191406 0 69.28066406 0 102.43037109 9.82441406 322.34677734 115.33007813 596.4319336 115.33007813 0 0 443.52685547 6.54345703 477.5203125-316.83515625 8.08066406-83.96191406 4.29345703-243.85957031-62.4375-251.50957031-56.21132813-7.40654297-89.75478516 3.58066406-161.11669922 18.07470703-47.38095703 9.59941406-166.12382812 26.34345703-187.14199219 39.52441406-229.38574219 104.34287109-354.48398437 179.62382812-388.74023437 190.83603516-25.875 0-48.31787109-6.46875-54.58007813-61.49970703 0-22.59316406 86.21191406-76.5 123.16728516-85.2178711 133.92949219-35.325 233.86640625-50.73662109 245.60332031-50.73662109 16.93125 0 388.02832031-89.28720703 399.40927734-97.72470703 11.38095703-8.4375 23.4-16.68691406 23.4-46.1803711 0-13.5-29.71845703-43.65-63.5625-80.38037109-40.14316406-43.55595703-87.84228516-94.12470703-123.57949218-106.16220703-65.84941406-33.75-194.92382813-61.76162109-307.68486329-49.03066406-246.84082031 27.86220703-400.87177734 298.02832031-414.27773437 316.77890625-56.99882812 79.72382812-102.43037109 180.69169922-126.27949219 225.26015625C159.40179036 650.22734375 93.62708333 708.12705078 84.60774739 747.89580078z" fill="#b8976d"></path>
         </svg>
     </div>
+    <div class="qing-container">
+        <img class="qing" src="qing.png">
+    </div>
+
     <!-- 添加音频元素 -->
-    <audio id="knockSound" src="muyu.mp3"></audio>
+    <audio id="muyuSound" src="muyu.mp3"></audio>
+    <audio id="qingSound" src="qing.mp3"></audio>
+    
     <script>
         const muyu = document.querySelector('.muyu');
+        const qing = document.querySelector('.qing');
         const gongdeContainer = document.getElementById('gongdeContainer');
-        let audio = document.getElementById('knockSound');
+        
+        let muyuAudio = document.getElementById('muyuSound');
+        let qingAudio = document.getElementById('qingSound');
+        
         // 修复iOS等设备需要用户交互后才能播放的问题
-        let isAudioReady = false;
+        let isMuyuAudioReady = false;
+        let isQingAudioReady = false;
+        
         function initAudio() {
             // 重新创建音频对象确保可以循环播放
-            audio = new Audio('muyu.mp3');
-            audio.load();
-            isAudioReady = true;
+            muyuAudio = new Audio('muyu.mp3');
+            qingAudio = new Audio('qing.mp3');
+            muyuAudio.load();
+            qingAudio.load();
+            isMuyuAudioReady = true;
+            isQingAudioReady = true;
         }
-        function playKnockSound() {
-            if (!isAudioReady) {
+        
+        function playMuyuSound() {
+            if (!isMuyuAudioReady) {
                 initAudio();
             }
             try {
                 // 重置播放进度
-                audio.currentTime = 0;
-                audio.play();
+                muyuAudio.currentTime = 0;
+                muyuAudio.play();
             } catch (e) {
                 console.log('音频播放失败，请检查浏览器设置');
             }
         }
-        // 统一点击处理函数
-        function handleKnock() {
+        
+        function playQingSound() {
+            if (!isQingAudioReady) {
+                initAudio();
+            }
+            try {
+                // 重置播放进度
+                qingAudio.currentTime = 0;
+                qingAudio.play();
+            } catch (e) {
+                console.log('音频播放失败，请检查浏览器设置');
+            }
+        }
+        
+        // 木鱼点击处理函数
+        function handleMuyuKnock() {
             muyu.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 muyu.style.transform = 'scale(1)';
             }, 100);
-            playKnockSound();
+            playMuyuSound();
         }
-        // 事件监听
-        muyu.addEventListener('click', handleKnock);
+        
+        // 磬点击处理函数
+        function handleQingKnock() {
+            qing.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                qing.style.transform = 'scale(1)';
+            }, 100);
+            playQingSound();
+        }
+        
+        // 木鱼事件监听
+        muyu.addEventListener('click', handleMuyuKnock);
         muyu.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            handleKnock();
+            handleMuyuKnock();
         });
+        
+        // 磬事件监听
+        qing.addEventListener('click', handleQingKnock);
+        qing.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleQingKnock();
+        });
+        
         // 首次触摸事件初始化音频
         document.addEventListener('touchstart', initAudio, { once: true });
         document.addEventListener('click', initAudio, { once: true });
     </script>
-  </div>
+</div>
   <!-- 电子木鱼代码结束 -->
 </footer>
