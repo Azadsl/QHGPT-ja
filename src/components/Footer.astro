@@ -147,22 +147,6 @@ oPlay.style.height = 23 + "px";
         .muyu:active {
             transform: scale(0.95);
         }
-        .gongde-container {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            pointer-events: none;
-        }
-        .gongde-text {
-            position: absolute;
-            white-space: nowrap;
-            color: #e0e0e0;
-            font-size: 6px;
-            font-family: Arial, sans-serif;
-            animation: floatUp 1s forwards;
-            text-shadow: 0 0 2px white;
-        }
         @keyframes floatUp {
             0% {
                 opacity: 1;
@@ -212,7 +196,6 @@ oPlay.style.height = 23 + "px";
             setTimeout(() => {
                 muyu.style.transform = 'scale(1)';
             }, 100);
-            createGongdeText();
             playKnockSound();
         }
         // 事件监听
