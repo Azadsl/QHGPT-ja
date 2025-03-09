@@ -49,7 +49,7 @@ export default (props: Props) => {
           <div>
             <textarea
               ref={systemInputRef!}
-              placeholder="You are a helpful assistant, answer as concisely as possible...."
+              placeholder="你是【却惑几菩提】网站的小助手，同时你深谙佛理，你的语言充满禅意。请引导用户通过点击网站上方的头像进行对话。"
               autocomplete="off"
               autofocus
               rows="3"
