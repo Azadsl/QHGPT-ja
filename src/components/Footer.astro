@@ -8,7 +8,8 @@
   </p>
   
 
-<div class="btns-bg">  <div class="PlayEy"></div>
+<div class="btns-bg">
+  <div class="PlayEy"></div>
   <div class="Btn"></div>
   <div class="Play">
     <audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3" loop></audio>
@@ -35,16 +36,16 @@
   overflow: hidden;
 }
 
-/* 添加背景动画效果 */
+/* 调整后的发光效果 - 更小更微妙 */
 .btns-bg::before {
   content: '';
   position: absolute;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-  top: -50%;
-  left: -50%;
-  animation: shine 8s linear infinite;
+  width: 150%;  /* 减小尺寸 */
+  height: 150%; /* 减小尺寸 */
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%); /* 调整渐变和透明度 */
+  top: -25%;
+  left: -25%;
+  animation: shine 10s linear infinite;
   pointer-events: none;
 }
 
