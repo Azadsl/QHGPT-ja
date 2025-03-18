@@ -8,112 +8,95 @@
   </p>
   
 
-<div class="player-container">
-  <div class="btns-bg">
-    <div class="PlayEy"></div>
-    <div class="Btn"></div>
-    <div class="Play">
-      <audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3"></audio>
-    </div>
-  </div>
-</div>
+<div class="btns-bg"> 
+  <div class="PlayEy"></div> 
+  <div class="Btn"></div> 
+  <div class="Play"> 
+    <audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3" loop></audio> 
+  </div> 
+</div> 
 
-<style type='text/css'>
-  .player-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 250px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .btns-bg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30px auto;
-    width: 150px;
-    height: 150px;
-    z-index: 9999;
-    position: relative;
-  }
-
-  .PlayEy {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 150px;
-    background: url(img/bg_center.png) no-repeat center;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .Btn {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 58px;
-    height: 58px;
-    background: url(img/btn-bg.png) no-repeat;
-    animation: Btn-bg 3s linear infinite;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-  }
-
-  .Play {
-    position: absolute;
-    width: 18px;
-    height: 23px;
-    background: url(img/pause.png) no-repeat;
-    transition: .5s;
-    cursor: pointer;
-    transform: scale(1.2);
-  }
+<style type='text/css'> 
+  .PlayEy { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 150px; 
+    height: 150px; 
+    background: url(img/bg_center.png) no-repeat center; 
+  } 
   
-  .Play:hover {
-    transform: scale(1.4);
-  }
+  .Btn { 
+    position: absolute; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 58px; 
+    height: 58px; 
+    background-color: yellow; 
+    background: url(img/btn-bg.png) no-repeat; 
+    animation: Btn-bg 3s linear infinite; 
+  } 
+  
+  .Play { 
+    position: absolute; 
+    width: 18px; 
+    height: 23px; 
+    background: red; 
+    background: url(img/pause.png) no-repeat; 
+    transition: .5s; 
+  } 
+  
+  .btns-bg { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 30px auto; 
+    width: 150px; 
+    height: 150px; 
+    z-index: 9999; 
+    border: 2px solid #ddd;  /* 添加的小边框 */
+    border-radius: 50%;      /* 确保边框是圆形的 */
+    padding: 5px;            /* 添加一点内边距 */
+  } 
+  
+  @keyframes Btn-bg { 
+    from {} 
+    to { 
+      transform: rotate(360deg); 
+    } 
+  } 
+</style> 
 
-  @keyframes Btn-bg {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-</style>
-
-<script type="text/javascript">
-  var i = 0;
-  var oPlayEy = document.getElementsByClassName("PlayEy")[0];
-  var oPlay = document.getElementsByClassName("Play")[0];
-  var audios = document.getElementById('audios');
-  var interval;
-
-  oPlay.onclick = function() {
-    if(audios.paused) {
-      audios.play();
-      oPlay.style.backgroundImage = "url(img/play.png)";
-      oPlay.style.width = 20 + "px";
-      oPlay.style.height = 20 + "px";
-      
-      interval = setInterval(function() {
-        (i == 360) ? i = 0 : i++;
-        oPlayEy.style.transform = "rotate(" + i + "deg)";
-      }, 30);
-    } else {
-      audios.pause();
-      oPlay.style.backgroundImage = "url(img/pause.png)";
-      oPlay.style.width = 18 + "px";
-      oPlay.style.height = 23 + "px";
-      clearInterval(interval);
-    }
-  }
+<script type="text/javascript"> 
+  var i = 0; 
+  var oPlayEy = document.getElementsByClassName("PlayEy")[0]; 
+  var oPlay = document.getElementsByClassName("Play")[0]; 
+  var audios = document.getElementById('audios'); 
+  
+  oPlay.onclick = function() { 
+    var seii = setInterval(function() { 
+      (i == 360) ? i = 0 : i++; 
+      oPlayEy.style.transform = "rotate(" + i + "deg)"; 
+      if(audios.paused) { 
+        clearInterval(seii) 
+      } 
+    }, 30); 
+    
+    if(audios.paused) { 
+      audios.play(); 
+      oPlay.style.backgroundImage = "url(img/play.png)"; 
+      oPlay.style.width = 20 + "px"; 
+      oPlay.style.height = 20 + "px"; 
+    } else { 
+      audios.pause(); 
+      oPlay.style.backgroundImage = "url(img/pause.png)"; 
+      oPlay.style.width = 18 + "px"; 
+      oPlay.style.height = 23 + "px"; 
+    } 
+  } 
 </script>
+
 
    <p mt-8 text-xs op-30>
 <span pr-1>已有<svg t="1682581321137" class="icon" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1846" width="1em" height="1em"><path d="m11.09409,9.32471l0.04395,0l0,-0.65089l0.70319,0c0.19338,0 0.3516,-0.14737 0.3516,-0.32749s-0.15822,-0.32749 -0.3516,-0.32749l-1.58658,0l0,-1.10733c0,-0.01433 -0.00439,-0.02866 -0.01099,-0.04094c0.14503,-0.04094 0.25271,-0.16579 0.25271,-0.31316l0,-5.89485c0,-0.18012 -0.15822,-0.32749 -0.3516,-0.32749s-0.3516,0.14737 -0.3516,0.32749l0,5.89485c0,0.14737 0.10768,0.27427 0.25271,0.31316c-0.00659,0.01228 -0.01099,0.02661 -0.01099,0.04094l0,1.10733l-1.95136,0l0,-1.10733c0,-0.01433 -0.00439,-0.02866 -0.01099,-0.04094c0.14503,-0.04094 0.25271,-0.16579 0.25271,-0.31316l0,-5.89485c0,-0.18012 -0.15822,-0.32749 -0.3516,-0.32749s-0.3516,0.14737 -0.3516,0.32749l0,5.89485c0,0.14737 0.10768,0.27427 0.25271,0.31316c-0.00659,0.01228 -0.01099,0.02661 -0.01099,0.04094l0,1.10733l-1.95136,0l0,-1.10733c0,-0.01433 -0.00439,-0.02866 -0.01099,-0.04094c0.14503,-0.04094 0.25271,-0.16579 0.25271,-0.31316l0,-5.89485c0,-0.18012 -0.15822,-0.32749 -0.3516,-0.32749s-0.3516,0.14737 -0.3516,0.32749l0,5.89485c0,0.14737 0.10768,0.27427 0.25271,0.31316c-0.00659,0.01228 -0.01099,0.02661 -0.01099,0.04094l0,1.10733l-1.58658,0c-0.19338,0 -0.3516,0.14737 -0.3516,0.32749s0.15822,0.32749 0.3516,0.32749l0.70319,0l0,0.65089l0.04395,0c-1.14049,0.09825 -2.04365,1.0009 -2.04365,2.08776l0,1.04593c0,0.90674 0.62408,1.68249 1.49428,1.97314l-0.33402,0.31112c-0.27249,0.25381 -0.27249,0.67136 0,0.92721c0.27249,0.25381 0.72077,0.25381 0.99546,0l0.99546,-0.92721c0.05933,-0.05526 0.10768,-0.11872 0.14064,-0.18831l3.76208,0c0.03296,0.06755 0.08131,0.131 0.14064,0.18831l0.99546,0.92721c0.27249,0.25381 0.72077,0.25381 0.99546,0c0.27249,-0.25381 0.27249,-0.67136 0,-0.92721l-0.33621,-0.31316c0.86361,-0.29474 1.4833,-1.06844 1.4833,-1.97109l0,-1.04593c-0.00439,-1.08686 -0.90536,-1.98747 -2.04805,-2.08776z" fill="#BE9567" p-id="1847"></path></svg>香火&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;次</span>
