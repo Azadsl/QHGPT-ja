@@ -9,96 +9,80 @@
   
 
 <div class="btns-bg">
-  <div class="PlayEy"></div>
-  <div class="Btn"></div>
-  <div class="Play">
-    <audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3" loop></audio>
-  </div>
+<div class="PlayEy"></div>
+<div class="Btn"></div>
+<div class="Play">
+<audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3" loop></audio>
 </div>
-
+</div>
 <style type='text/css'>
-.btns-bg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 3px auto;
-  width: 150px;
-  height: 150px;
-  z-index: 9999;
-  background: linear-gradient(145deg, #f6f8ff, #e0e4f7);
-  border-radius: 50%;
-  padding: 10px;
-  position: relative;
-  overflow: hidden;
-}
-
 .PlayEy {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  height: 150px;
-  background: url(img/bg_center.png) no-repeat center;
-  position: relative;
-  z-index: 2;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 150px;
+height: 150px;
+background: url(img/bg_center.png) no-repeat center;
 }
-
 .Btn {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 58px;
-  height: 58px;
-  background: url(img/btn-bg.png) no-repeat;
-  animation: Btn-bg 3s linear infinite;
-  z-index: 3;
+position: absolute;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 58px;
+height: 58px;
+background-color: yellow;
+background: url(img/btn-bg.png) no-repeat;
+animation: Btn-bg 3s linear infinite;
 }
-
 .Play {
-  position: absolute;
-  width: 18px;
-  height: 23px;
-  background: url(img/pause.png) no-repeat;
-  transition: .5s;
-  cursor: pointer;
-  z-index: 4;
+position: absolute;
+width: 18px;
+height: 23px;
+background: red;
+background: url(img/pause.png) no-repeat;
+transition: .5s;
 }
-
+.btns-bg {
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 30px auto;
+width: 150px;
+height: 150px;
+z-index: 9999;
+}
 @keyframes Btn-bg {
-  from {}
-  to {
-    transform: rotate(360deg);
-  }
+from {}
+to {
+transform: rotate(360deg);
+}
 }
 </style>
-
 <script type="text/javascript">
 var i = 0;
 var oPlayEy = document.getElementsByClassName("PlayEy")[0];
 var oPlay = document.getElementsByClassName("Play")[0];
 var audios = document.getElementById('audios');
-
 oPlay.onclick = function() {
-  var seii = setInterval(function() {
-    (i == 360) ? i = 0 : i++;
-    oPlayEy.style.transform = "rotate(" + i + "deg)";
-    if(audios.paused) {
-      clearInterval(seii)
-    }
-  }, 30);
-  
-  if(audios.paused) {
-    audios.play();
-    oPlay.style.backgroundImage = "url(img/play.png)";
-    oPlay.style.width = 20 + "px";
-    oPlay.style.height = 20 + "px";
-  } else {
-    audios.pause();
-    oPlay.style.backgroundImage = "url(img/pause.png)";
-    oPlay.style.width = 18 + "px";
-    oPlay.style.height = 23 + "px";
-  }
+var seii = setInterval(function() {
+(i == 360) ? i = 0 : i++;
+oPlayEy.style.transform = "rotate(" + i + "deg)";
+if(audios.paused) {
+clearInterval(seii)
+}
+}, 30);
+if(audios.paused) {
+audios.play();
+oPlay.style.backgroundImage = "url(img/play.png)";
+oPlay.style.width = 20 + "px";
+oPlay.style.height = 20 + "px";
+} else {
+audios.pause();
+oPlay.style.backgroundImage = "url(img/pause.png)";
+oPlay.style.width = 18 + "px";
+oPlay.style.height = 23 + "px";
+}
 }
 </script>
 
