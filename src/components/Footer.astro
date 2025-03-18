@@ -28,21 +28,21 @@
   z-index: 9999;
   background: linear-gradient(145deg, #f6f8ff, #e0e4f7);
   border-radius: 50%;
-  box-shadow: 8px 8px 16px rgba(0,0,0,0.1),
-             -8px -8px 16px rgba(255,255,255,0.8);
   padding: 15px;
   position: relative;
   overflow: hidden;
 }
 
-/* 大幅减小发光效果 */
-.btns-bg::before {
+/* 仅在外围添加极小的发光效果 */
+.btns-bg::after {
   content: '';
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 25%);
-  animation: shine 15s linear infinite;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   pointer-events: none;
 }
 
@@ -84,11 +84,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-@keyframes shine {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 </style>
 
