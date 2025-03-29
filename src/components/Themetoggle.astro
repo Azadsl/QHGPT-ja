@@ -220,27 +220,30 @@ window.addEventListener('resize', adjustFogSize);
 
 
 
-<div class="translate-container">
-  <button id="translateBtn" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10" title="翻译">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12.87 15.07L10.33 12.56L10.36 12.53C12.1 10.59 13.34 8.36 14.07 6H17V4H10V2H8V4H1V6H12.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8H4.69C5.42 9.63 6.42 11.17 7.67 12.56L2.58 17.58L4 19L9 14L12.11 17.11L12.87 15.07ZM18.5 10H16.5L12 22H14L15.12 19H19.87L21 22H23L18.5 10ZM15.88 17L17.5 12.67L19.12 17H15.88Z"/>
-    </svg>
-  </button>
-  <div id="translateMenu" class="translate-menu">
-    <a href="#" class="translate-item" data-lang="en">English</a>
-    <a href="#" class="translate-item" data-lang="ja">日本語</a>
-    <a href="#" class="translate-item" data-lang="ko">한국어</a>
-    <a href="#" class="translate-item" data-lang="hi">हिन्दी</a>
-    <a href="#" class="translate-item" data-lang="th">ไทย</a>
+ <!-- 翻译按钮 -->
+  <div class="translate-container">
+    <button id="translateBtn" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10" title="翻译">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.87 15.07L10.33 12.56L10.36 12.53C12.1 10.59 13.34 8.36 14.07 6H17V4H10V2H8V4H1V6H12.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8H4.69C5.42 9.63 6.42 11.17 7.67 12.56L2.58 17.58L4 19L9 14L12.11 17.11L12.87 15.07ZM18.5 10H16.5L12 22H14L15.12 19H19.87L21 22H23L18.5 10ZM15.88 17L17.5 12.67L19.12 17H15.88Z"/>
+      </svg>
+    </button>
+    <div id="translateMenu" class="translate-menu">
+      <div class="translate-item" data-lang="zh">中文(原文)</div>
+      <div class="translate-item" data-lang="en">English</div>
+      <div class="translate-item" data-lang="ja">日本語</div>
+      <div class="translate-item" data-lang="ko">한국어</div>
+      <div class="translate-item" data-lang="hi">हिन्दी</div>
+      <div class="translate-item" data-lang="th">ไทย</div>
+    </div>
   </div>
 </div>
 
+<!-- 添加谷歌翻译的元素 -->
+<div id="google_translate_element" style="position: absolute; top: -1000px; left: -1000px;"></div>
+
 <style>
   .translate-container {
-    position: fixed;
-    bottom: 20px;
-    right: 80px;
-    z-index: 100;
+    position: relative;
   }
   
   .translate-menu {
@@ -260,7 +263,6 @@ window.addEventListener('resize', adjustFogSize);
     padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.2s;
-    text-decoration: none;
     color: #333;
   }
   
@@ -279,6 +281,15 @@ window.addEventListener('resize', adjustFogSize);
   html.dark .translate-item:hover {
     background-color: #444;
   }
+  
+  /* 隐藏 Google 翻译小工具的框 */
+  body > .skiptranslate, .goog-te-banner-frame {
+    display: none !important;
+  }
+  
+  body {
+    top: 0 !important;
+  }
 </style>
 
 <script>
@@ -287,11 +298,49 @@ window.addEventListener('resize', adjustFogSize);
     const translateMenu = document.getElementById('translateMenu');
     const translateItems = document.querySelectorAll('.translate-item');
     
-    // 翻译功能 - 使用直接跳转到Google翻译页面的方式
+    // 添加Google翻译脚本
+    function loadGoogleTranslate() {
+      if (!window.googleTranslateScriptAdded) {
+        window.googleTranslateElementInit = function() {
+          new google.translate.TranslateElement({
+            pageLanguage: 'zh-CN',
+            includedLanguages: 'en,ja,ko,hi,th',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+          }, 'google_translate_element');
+        };
+        
+        const script = document.createElement('script');
+        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.body.appendChild(script);
+        window.googleTranslateScriptAdded = true;
+      }
+    }
+    
+    // 页面加载时加载翻译脚本
+    loadGoogleTranslate();
+    
+    // 翻译功能
     function translatePage(targetLang) {
-      const currentUrl = window.location.href;
-      const googleTranslateUrl = `https://translate.google.com/translate?sl=auto&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
-      window.open(googleTranslateUrl, '_blank');
+      // 确保Google翻译脚本已加载
+      if (typeof google !== 'undefined' && google.translate) {
+        // 等待Google翻译小部件加载完成
+        const intervalId = setInterval(() => {
+          const selectElement = document.querySelector('.goog-te-combo');
+          if (selectElement) {
+            clearInterval(intervalId);
+            selectElement.value = targetLang;
+            selectElement.dispatchEvent(new Event('change'));
+          }
+        }, 300);
+        
+        // 避免无限等待
+        setTimeout(() => clearInterval(intervalId), 5000);
+      } else {
+        // 如果Google翻译还未加载，先加载脚本
+        loadGoogleTranslate();
+        setTimeout(() => translatePage(targetLang), 1000);
+      }
     }
     
     // 切换菜单显示状态
@@ -302,10 +351,29 @@ window.addEventListener('resize', adjustFogSize);
     
     // 点击菜单项进行翻译
     translateItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-        e.preventDefault();
+      item.addEventListener('click', function() {
         const lang = this.getAttribute('data-lang');
-        translatePage(lang);
+        if (lang === 'zh') {
+          // 恢复原文
+          const iframe = document.querySelector('.goog-te-banner-frame');
+          if (iframe) {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const restoreButton = iframeDoc.querySelector('.goog-te-button button');
+            if (restoreButton) {
+              restoreButton.click();
+            } else {
+              // 备用方案：使用cookie方法恢复
+              document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+              location.reload();
+            }
+          } else {
+            // 如果找不到框架，尝试直接刷新
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            location.reload();
+          }
+        } else {
+          translatePage(lang);
+        }
         translateMenu.style.display = 'none';
       });
     });
@@ -318,7 +386,6 @@ window.addEventListener('resize', adjustFogSize);
     });
   });
 </script>
-
 
 <script type="text/javascript">
       if (! (navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i))) {
