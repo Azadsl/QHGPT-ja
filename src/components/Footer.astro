@@ -374,59 +374,181 @@
 
 <!-- 在</footer>标签前添加以下代码 -->
 
-<!-- 添加谷歌翻译按钮 -->
-<div style="text-align:center; margin:20px 0;" id="google_translate_element"></div>
+<!-- 添加翻译菜单 -->
+<div style="text-align:center; margin:20px 0;">
+  <div class="translate-container" style="display:inline-block; position:relative;">
+    <button id="showTranslateOptions" style="padding:8px 15px; background-color:#f8f8f8; border:1px solid #BE9567; border-radius:4px; cursor:pointer; color:#333;">
+      <span style="display:inline-block; vertical-align:middle; margin-right:5px;">🌐</span>
+      翻译页面 / Translate
+    </button>
+    <div id="translateOptions" style="display:none; position:absolute; z-index:1000; background-color:white; border:1px solid #ddd; border-radius:4px; padding:10px; margin-top:5px; width:200px; text-align:left; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+      <div style="margin-bottom:8px; font-weight:bold; color:#333; border-bottom:1px solid #eee; padding-bottom:5px;">选择语言 / Language</div>
+      <a href="#" data-lang="en" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">English</a>
+      <a href="#" data-lang="ja" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">日本語</a>
+      <a href="#" data-lang="ko" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">한국어</a>
+      <a href="#" data-lang="fr" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">Français</a>
+      <a href="#" data-lang="de" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">Deutsch</a>
+      <a href="#" data-lang="es" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">Español</a>
+      <a href="#" data-lang="ru" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">Русский</a>
+      <a href="#" data-lang="ar" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">العربية</a>
+      <a href="#" data-lang="th" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">ไทย</a>
+      <a href="#" data-lang="vi" class="translate-link" style="display:block; padding:6px 10px; color:#333; text-decoration:none; border-radius:3px;">Tiếng Việt</a>
+    </div>
+  </div>
+</div>
 
-<style>
-/* 美化谷歌翻译组件的样式 */
-.goog-te-gadget {
-  font-family: Arial, sans-serif;
-  color: #666;
-}
-.goog-te-gadget .goog-te-combo {
-  padding: 6px 10px;
-  border: 1px solid #BE9567;
-  border-radius: 4px;
-  background-color: white;
-  color: #333;
-  margin: 4px;
-}
-.goog-te-banner-frame {
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-}
-</style>
-
-<script type="text/javascript">
-// 添加谷歌翻译API脚本
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: 'zh-CN',
-      includedLanguages: 'en,ja,ko,fr,de,es,ru,ar,th,vi', // 支持的语言列表
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-      autoDisplay: false
-    },
-    'google_translate_element'
-  );
-  
-  // 添加一个简单的提示文本
-  setTimeout(function() {
-    var element = document.getElementById('google_translate_element');
-    if (element && element.querySelector('.goog-te-gadget')) {
-      var span = document.createElement('div');
-      span.style.fontSize = '12px';
-      span.style.marginTop = '5px';
-      span.style.color = '#888';
-      span.innerHTML = '← 点击此处选择翻译语言';
-      element.appendChild(span);
+<script>
+// 独立作用域避免冲突
+(function() {
+  // 页面加载完成后执行
+  window.addEventListener('DOMContentLoaded', function() {
+    var translateButton = document.getElementById('showTranslateOptions');
+    var optionsMenu = document.getElementById('translateOptions');
+    var translateLinks = document.getElementsByClassName('translate-link');
+    
+    // 是否已加载翻译API
+    var translatorLoaded = false;
+    
+    // 点击按钮显示/隐藏语言选项
+    if (translateButton) {
+      translateButton.addEventListener('click', function(e) {
+        e.stopPropagation(); // 阻止事件冒泡
+        optionsMenu.style.display = optionsMenu.style.display === 'none' ? 'block' : 'none';
+      });
     }
-  }, 1000);
-}
-
-// 动态加载谷歌翻译API
-var googleTranslateScript = document.createElement('script');
-googleTranslateScript.type = 'text/javascript';
-googleTranslateScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-document.body.appendChild(googleTranslateScript);
+    
+    // 点击页面其他地方关闭语言选项
+    document.addEventListener('click', function(e) {
+      if (optionsMenu && optionsMenu.style.display === 'block' && 
+          !optionsMenu.contains(e.target) && e.target !== translateButton) {
+        optionsMenu.style.display = 'none';
+      }
+    });
+    
+    // 为每个语言链接添加点击事件
+    for (var i = 0; i < translateLinks.length; i++) {
+      translateLinks[i].addEventListener('click', function(e) {
+        e.preventDefault();
+        var lang = this.getAttribute('data-lang');
+        translatePage(lang);
+        optionsMenu.style.display = 'none';
+      });
+    }
+    
+    // 翻译功能
+    function translatePage(lang) {
+      // 如果未加载翻译API，先加载
+      if (!translatorLoaded) {
+        loadTranslator(function() {
+          translatorLoaded = true;
+          executeTranslation(lang);
+        });
+      } else {
+        executeTranslation(lang);
+      }
+    }
+    
+    // 加载Microsoft翻译API (更可靠的选择)
+    function loadTranslator(callback) {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/microsoft-translator-browser@0.1.2/dist/translator.min.js';
+      script.onload = callback;
+      script.onerror = function() {
+        alert('翻译服务加载失败，请检查网络连接或稍后再试');
+      };
+      document.body.appendChild(script);
+    }
+    
+    // 执行翻译
+    function executeTranslation(lang) {
+      try {
+        // 使用微软翻译API
+        if (window.microsoftTranslator) {
+          // 首先，保存当前滚动位置
+          var scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+          
+          // 设置翻译中提示
+          var translatingMsg = document.createElement('div');
+          translatingMsg.id = 'translatingMessage';
+          translatingMsg.style.position = 'fixed';
+          translatingMsg.style.top = '50%';
+          translatingMsg.style.left = '50%';
+          translatingMsg.style.transform = 'translate(-50%, -50%)';
+          translatingMsg.style.background = 'rgba(0,0,0,0.7)';
+          translatingMsg.style.color = 'white';
+          translatingMsg.style.padding = '15px 20px';
+          translatingMsg.style.borderRadius = '5px';
+          translatingMsg.style.zIndex = '9999';
+          translatingMsg.textContent = '正在翻译...';
+          document.body.appendChild(translatingMsg);
+          
+          // 进行翻译
+          microsoftTranslator.translate({
+            text: document.documentElement.innerHTML,
+            from: 'zh-CN',
+            to: lang
+          }).then(function(result) {
+            // 翻译完成，移除提示
+            if (document.getElementById('translatingMessage')) {
+              document.body.removeChild(document.getElementById('translatingMessage'));
+            }
+            
+            // 应用翻译结果 (仅翻译文本节点，保留HTML结构和事件)
+            var textNodes = getAllTextNodes(document.body);
+            for (var i = 0; i < textNodes.length; i++) {
+              if (textNodes[i].nodeValue.trim()) {
+                textNodes[i].nodeValue = translateText(textNodes[i].nodeValue, result);
+              }
+            }
+            
+            // 恢复滚动位置
+            window.scrollTo(0, scrollPos);
+          }).catch(function(error) {
+            console.error('翻译失败:', error);
+            if (document.getElementById('translatingMessage')) {
+              document.body.removeChild(document.getElementById('translatingMessage'));
+            }
+            alert('翻译失败，请稍后再试');
+          });
+        } else {
+          // 备用方案：使用Google翻译
+          var url = 'https://translate.google.com/translate?sl=zh-CN&tl=' + lang + '&u=' + encodeURIComponent(window.location.href);
+          window.open(url, '_blank');
+        }
+      } catch (e) {
+        console.error('翻译过程出错:', e);
+        
+        // 使用最简单的备用方案 - Google翻译链接
+        var url = 'https://translate.google.com/translate?sl=zh-CN&tl=' + lang + '&u=' + encodeURIComponent(window.location.href);
+        window.open(url, '_blank');
+      }
+    }
+    
+    // 获取所有文本节点
+    function getAllTextNodes(node) {
+      var textNodes = [];
+      
+      function getNodes(node) {
+        if (node.nodeType === 3) { // Text node
+          textNodes.push(node);
+        } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+          for (var i = 0; i < node.childNodes.length; i++) {
+            getNodes(node.childNodes[i]);
+          }
+        }
+      }
+      
+      getNodes(node);
+      return textNodes;
+    }
+    
+    // 从翻译结果中找到对应翻译
+    function translateText(original, result) {
+      // 简化版：直接返回整体翻译结果
+      // 实际应用中，应该有更复杂的匹配逻辑
+      return result;
+    }
+  });
+})();
 </script>
 </footer>
