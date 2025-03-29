@@ -372,128 +372,136 @@
 </div>
   <!-- 电子木鱼代码结束 -->
 
-
-  <!-- 翻译按钮开始 -->
+ <!-- 添加翻译按钮 -->
   <div class="translation-container" style="margin-top: 20px; text-align: center;">
-    <div class="translation-button" style="display: inline-block; cursor: pointer; padding: 5px 15px; border: 1px solid #BE9567; border-radius: 4px; color: #BE9567; font-size: 14px; transition: all 0.3s ease;">
+    <div class="translation-button" id="translate-btn" style="display: inline-block; cursor: pointer; padding: 5px 15px; border: 1px solid #BE9567; border-radius: 4px; color: #BE9567; font-size: 14px; transition: all 0.3s ease;">
       <span id="translation-text">翻译页面</span> <span style="margin-left: 5px;">🌐</span>
     </div>
-    <div id="language-selector" style="display: none; margin-top: 10px; text-align: center;">
-      <select id="language-select" style="padding: 5px; border: 1px solid #BE9567; border-radius: 4px; background-color: transparent; color: #BE9567; font-size: 14px;">
-        <option value="zh-CN">简体中文</option>
-        <option value="en">English</option>
-        <option value="ja">日本語</option>
-        <option value="ko">한국어</option>
-        <option value="fr">Français</option>
-        <option value="de">Deutsch</option>
-        <option value="es">Español</option>
-        <option value="ru">Русский</option>
-        <option value="ar">العربية</option>
-        <option value="pt">Português</option>
-        <option value="it">Italiano</option>
-        <option value="th">ไทย</option>
-        <option value="vi">Tiếng Việt</option>
+    <div id="translation-options" style="display: none; margin-top: 10px;">
+      <select id="translate-language-select" style="padding: 5px; border: 1px solid #BE9567; border-radius: 4px; background-color: transparent; color: #BE9567; font-size: 14px;">
+        <option value="chinese_simplified">简体中文</option>
+        <option value="english">English</option>
+        <option value="japanese">日本語</option>
+        <option value="korean">한국어</option>
+        <option value="french">Français</option>
+        <option value="german">Deutsch</option>
+        <option value="spanish">Español</option>
+        <option value="russian">Русский</option>
+        <option value="arabic">العربية</option>
+        <option value="portuguese">Português</option>
+        <option value="italian">Italiano</option>
+        <option value="thai">ไทย</option>
+        <option value="vietnamese">Tiếng Việt</option>
       </select>
-      <button id="translate-button" style="margin-left: 10px; padding: 5px 15px; border: 1px solid #BE9567; border-radius: 4px; background-color: #BE9567; color: white; font-size: 14px; cursor: pointer;">
+      <button id="translate-confirm-btn" style="margin-left: 10px; padding: 5px 15px; border: 1px solid #BE9567; border-radius: 4px; background-color: #BE9567; color: white; font-size: 14px; cursor: pointer;">
         确认
       </button>
     </div>
+    <div id="translate-status" style="margin-top: 5px; font-size: 12px; color: #BE9567; display: none;"></div>
   </div>
 
   <script type="text/javascript">
-    // 翻译功能
+    // 添加翻译按钮的功能，避免与其他JS冲突
     document.addEventListener('DOMContentLoaded', function() {
-      const translationButton = document.querySelector('.translation-button');
-      const languageSelector = document.getElementById('language-selector');
-      const languageSelect = document.getElementById('language-select');
-      const translateButton = document.getElementById('translate-button');
-      let googleTranslateScript = null;
-      let isTranslatorLoaded = false;
+      var translateBtn = document.getElementById('translate-btn');
+      var translateOptions = document.getElementById('translation-options');
+      var translateConfirmBtn = document.getElementById('translate-confirm-btn');
+      var translateSelect = document.getElementById('translate-language-select');
+      var translateStatus = document.getElementById('translate-status');
+      var isTranslateScriptLoaded = false;
       
-      // 切换语言选择器的显示/隐藏
-      translationButton.addEventListener('click', function() {
-        if (languageSelector.style.display === 'none') {
-          languageSelector.style.display = 'block';
-          
-          // 如果谷歌翻译脚本还没加载，则加载它
-          if (!isTranslatorLoaded) {
-            loadGoogleTranslate();
-          }
+      // 点击翻译按钮显示选项
+      translateBtn.addEventListener('click', function() {
+        if (translateOptions.style.display === 'none') {
+          translateOptions.style.display = 'block';
         } else {
-          languageSelector.style.display = 'none';
+          translateOptions.style.display = 'none';
         }
       });
       
-      // 点击确认按钮开始翻译
-      translateButton.addEventListener('click', function() {
-        const selectedLanguage = languageSelect.value;
-        translatePage(selectedLanguage);
-        languageSelector.style.display = 'none';
+      // 点击确认按钮执行翻译
+      translateConfirmBtn.addEventListener('click', function() {
+        var selectedLanguage = translateSelect.value;
+        translateOptions.style.display = 'none';
+        
+        // 显示状态信息
+        translateStatus.style.display = 'block';
+        translateStatus.textContent = '正在加载翻译功能...';
+        
+        // 如果翻译脚本尚未加载，则加载它
+        if (!isTranslateScriptLoaded) {
+          loadTranslateScript(function() {
+            isTranslateScriptLoaded = true;
+            executeTranslation(selectedLanguage);
+          });
+        } else {
+          // 如果已加载，直接执行翻译
+          executeTranslation(selectedLanguage);
+        }
       });
       
-      // 加载谷歌翻译脚本
-      function loadGoogleTranslate() {
-        if (!googleTranslateScript) {
-          googleTranslateScript = document.createElement('script');
-          googleTranslateScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-          document.body.appendChild(googleTranslateScript);
-          
-          // 定义全局回调函数
-          window.googleTranslateElementInit = function() {
-            new google.translate.TranslateElement({
-              pageLanguage: 'zh-CN',
-              autoDisplay: false
-            }, 'google_translate_element');
-            
-            isTranslatorLoaded = true;
-          };
-          
-          // 创建谷歌翻译元素容器
-          const translateElement = document.createElement('div');
-          translateElement.id = 'google_translate_element';
-          translateElement.style.display = 'none';
-          document.body.appendChild(translateElement);
-        }
+      // 加载翻译脚本
+      function loadTranslateScript(callback) {
+        var script = document.createElement('script');
+        script.src = "https://cdn.staticfile.net/translate.js/3.12.0/translate.js";
+        script.onload = callback;
+        script.onerror = function() {
+          translateStatus.textContent = '翻译脚本加载失败，请稍后再试';
+          setTimeout(function() {
+            translateStatus.style.display = 'none';
+          }, 3000);
+        };
+        document.body.appendChild(script);
       }
       
-      // 翻译页面函数
-      function translatePage(targetLanguage) {
-        if (!isTranslatorLoaded) {
-          // 如果谷歌翻译尚未加载完成，设置一个检查间隔
-          const checkInterval = setInterval(function() {
-            if (isTranslatorLoaded) {
-              clearInterval(checkInterval);
-              doTranslation(targetLanguage);
+      // 执行翻译
+      function executeTranslation(targetLanguage) {
+        try {
+          // 显示正在翻译的状态
+          translateStatus.textContent = '正在翻译...';
+          
+          // 保存原始功能的引用
+          window._originalToggleExplanation = window._originalToggleExplanation || 
+                                             (typeof toggleExplanation !== 'undefined' ? toggleExplanation : null);
+          
+          // 创建安全的执行环境
+          setTimeout(function() {
+            try {
+              // 设置翻译参数并执行
+              window.translate.language.setLocal('chinese_simplified');
+              window.translate.language.setTo(targetLanguage);
+              window.translate.service.use('client.edge');
+              window.translate.execute();
+              
+              // 恢复原始功能
+              if (window._originalToggleExplanation) {
+                window.toggleExplanation = window._originalToggleExplanation;
+              }
+              
+              // 更新状态
+              translateStatus.textContent = '翻译完成';
+              document.getElementById('translation-text').textContent = '已翻译';
+              
+              // 3秒后隐藏状态
+              setTimeout(function() {
+                translateStatus.style.display = 'none';
+              }, 3000);
+            } catch (e) {
+              console.error('执行翻译时出错:', e);
+              translateStatus.textContent = '翻译失败，请稍后再试';
+              
+              setTimeout(function() {
+                translateStatus.style.display = 'none';
+              }, 3000);
             }
           }, 100);
-          return;
-        }
-        
-        doTranslation(targetLanguage);
-      }
-      
-      function doTranslation(targetLanguage) {
-        try {
-          // 更新翻译按钮文本
-          document.getElementById('translation-text').innerText = '翻译中...';
+        } catch (e) {
+          console.error('翻译初始化错误:', e);
+          translateStatus.textContent = '翻译失败，请稍后再试';
           
-          // 尝试访问谷歌翻译API并触发翻译
-          const selectElement = document.querySelector('.goog-te-combo');
-          if (selectElement) {
-            selectElement.value = targetLanguage;
-            selectElement.dispatchEvent(new Event('change'));
-            
-            // 翻译完成后更新按钮文本
-            setTimeout(function() {
-              document.getElementById('translation-text').innerText = '已翻译';
-            }, 1000);
-          } else {
-            console.error('无法找到谷歌翻译下拉菜单');
-            document.getElementById('translation-text').innerText = '翻译失败';
-          }
-        } catch (error) {
-          console.error('翻译过程中发生错误:', error);
-          document.getElementById('translation-text').innerText = '翻译失败';
+          setTimeout(function() {
+            translateStatus.style.display = 'none';
+          }, 3000);
         }
       }
     });
