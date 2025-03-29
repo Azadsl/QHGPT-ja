@@ -148,6 +148,12 @@
    <p mt-3 text-xs op-30>
     4. 无论如何，请保持平和、欢喜与慈悲。如佛经所言： <strong>"应无所住，而生其心"</strong>。
   </p>
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js"></script>
+<script>
+translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+translate.service.use('client.edge'); //设置机器翻译服务通道，直接客户端本身，不依赖服务端 。相关说明参考 http://translate.zvo.cn/43086.html
+translate.execute();//进行翻译 
+</script>
 </div>
 
 <script>
@@ -367,12 +373,7 @@
         document.addEventListener('click', initAudio, { once: true });
     </script>
 
-<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js"></script>
-<script>
-translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
-translate.service.use('client.edge'); //设置机器翻译服务通道，直接客户端本身，不依赖服务端 。相关说明参考 http://translate.zvo.cn/43086.html
-translate.execute();//进行翻译 
-</script>
+
 </div>
   <!-- 电子木鱼代码结束 -->
 
