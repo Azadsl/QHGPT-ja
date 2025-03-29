@@ -1,4 +1,5 @@
 <footer>
+
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script async src="https://api.ly522.com/js/jilei.pure.mini.js"></script>
   <p mt-8 text-xs op-30 align="center">
@@ -372,5 +373,99 @@
 </div>
   <!-- 电子木鱼代码结束 -->
 
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://api.ly522.com/js/jilei.pure.mini.js"></script>
+  <!-- 添加翻译按钮区域 -->
+  <div class="translation-container" style="text-align: center; margin: 20px 0;">
+    <p style="margin-bottom: 10px; font-size: 14px;">选择翻译语言:</p>
+    <div class="translation-buttons">
+      <button class="translate-btn" data-lang="en">English</button>
+      <button class="translate-btn" data-lang="ja">日本語</button>
+      <button class="translate-btn" data-lang="ko">한국어</button>
+      <button class="translate-btn" data-lang="th">ภาษาไทย</button>
+      <button class="translate-btn" data-lang="zh-TW">繁體中文</button>
+      <button class="translate-btn" data-lang="hi">हिन्दी</button>
+      <button class="translate-btn" data-lang="zh-CN">简体中文</button>
+    </div>
+  </div>
+
+  <style>
+    .translation-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .translate-btn {
+      background-color: #be9567;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background-color 0.3s;
+    }
+    .translate-btn:hover {
+      background-color: #a17d4f;
+    }
+  </style>
+
+  <script type="text/javascript">
+    (function() {
+      // 使用IIFE避免全局变量污染
+      function createTranslationScript(lang) {
+        // 移除可能存在的旧脚本
+        const oldScript = document.getElementById('google-translate-script');
+        if (oldScript) {
+          oldScript.parentNode.removeChild(oldScript);
+        }
+        
+        // 创建新的Google翻译脚本
+        const script = document.createElement('script');
+        script.id = 'google-translate-script';
+        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        
+        // 在全局作用域上定义回调函数
+        window.googleTranslateElementInit = function() {
+          new google.translate.TranslateElement({
+            pageLanguage: 'zh-CN',
+            includedLanguages: lang,
+            autoDisplay: false,
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+          }, 'google_translate_element');
+          
+          // 自动触发翻译
+          setTimeout(function() {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+              select.value = lang;
+              select.dispatchEvent(new Event('change'));
+            }
+          }, 1000);
+        };
+        
+        document.body.appendChild(script);
+      }
+      
+      // 创建隐藏的翻译元素
+      const translateElement = document.createElement('div');
+      translateElement.id = 'google_translate_element';
+      translateElement.style.display = 'none';
+      document.body.appendChild(translateElement);
+      
+      // 为所有翻译按钮添加点击事件
+      document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.translate-btn');
+        buttons.forEach(function(button) {
+          button.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            createTranslationScript(lang);
+          });
+        });
+      });
+    })();
+  </script>
  
 </footer>
