@@ -373,4 +373,92 @@
   <!-- 电子木鱼代码结束 -->
 
 
+
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js"></script>
+<script>
+// 配置翻译
+translate.language.setLocal('chinese_simplified'); 
+translate.service.use('client.edge');
+
+// 添加一个翻译按钮，而不是自动执行翻译
+document.addEventListener('DOMContentLoaded', function() {
+  // 创建翻译按钮容器
+  var translateContainer = document.createElement('div');
+  translateContainer.className = 'translate-container';
+  translateContainer.style.textAlign = 'center';
+  translateContainer.style.margin = '20px 0';
+  
+  // 创建语言选择下拉框
+  var langSelect = document.createElement('select');
+  langSelect.id = 'languageSelect';
+  langSelect.style.padding = '5px 10px';
+  langSelect.style.borderRadius = '4px';
+  langSelect.style.border = '1px solid #BE9567';
+  langSelect.style.backgroundColor = 'white';
+  langSelect.style.color = '#333';
+  langSelect.style.cursor = 'pointer';
+  
+  // 添加语言选项
+  var languages = [
+    { value: 'chinese_simplified', text: '简体中文' },
+    { value: 'english', text: 'English' },
+    { value: 'japanese', text: '日本語' },
+    { value: 'korean', text: '한국어' },
+    { value: 'french', text: 'Français' },
+    { value: 'german', text: 'Deutsch' },
+    { value: 'spanish', text: 'Español' },
+    { value: 'russian', text: 'Русский' }
+  ];
+  
+  languages.forEach(function(lang) {
+    var option = document.createElement('option');
+    option.value = lang.value;
+    option.text = lang.text;
+    langSelect.appendChild(option);
+  });
+  
+  // 添加事件监听
+  langSelect.addEventListener('change', function() {
+    var selectedLang = this.value;
+    if(selectedLang === 'chinese_simplified') {
+      // 回到原始语言
+      translate.restore();
+    } else {
+      // 翻译到选择的语言
+      translate.language.setLocal('chinese_simplified');
+      translate.language.setTarget(selectedLang);
+      
+      // 使用try-catch避免翻译过程中的错误影响页面功能
+      try {
+        translate.execute();
+      } catch(e) {
+        console.error('翻译出错:', e);
+      }
+    }
+  });
+  
+  // 将翻译控件添加到页面
+  translateContainer.appendChild(langSelect);
+  
+  // 找到合适的位置插入翻译控件 - 这里选择在footer的第一个子元素之前
+  var footer = document.querySelector('footer');
+  if(footer) {
+    footer.insertBefore(translateContainer, footer.firstChild);
+  }
+  
+  // 添加一些配置，防止translate.js修改特定元素
+  // 防止修改脚本元素和部分功能区域
+  translate.ignore.class.push('btns-bg');
+  translate.ignore.class.push('PlayEy');
+  translate.ignore.class.push('Btn');
+  translate.ignore.class.push('Play');
+  translate.ignore.class.push('muyu-container');
+  translate.ignore.class.push('qing-container');
+  translate.ignore.class.push('fengling-container');
+  translate.ignore.class.push('zhong-container');
+  translate.ignore.tag.push('script');
+  translate.ignore.tag.push('style');
+  translate.ignore.tag.push('audio');
+});
+</script>
 </footer>
