@@ -372,85 +372,61 @@
 </div>
   <!-- 电子木鱼代码结束 -->
 
+<!-- 在</footer>标签前添加以下代码 -->
 
+<!-- 添加谷歌翻译按钮 -->
+<div style="text-align:center; margin:20px 0;" id="google_translate_element"></div>
 
-
-<!-- 添加翻译按钮 -->
-<div style="text-align:center; margin:20px 0;">
-  <button id="translateBtn" style="padding:8px 15px; background-color:#f0f0f0; border:1px solid #BE9567; border-radius:4px; cursor:pointer;">
-    <span style="display:inline-block; vertical-align:middle; margin-right:5px;">🌐</span>
-    <span>翻译/Translate</span>
-  </button>
-  <div id="languageOptions" style="display:none; margin-top:10px;">
-    <button class="langBtn" data-lang="english" style="margin:5px; padding:5px 10px; cursor:pointer;">English</button>
-    <button class="langBtn" data-lang="japanese" style="margin:5px; padding:5px 10px; cursor:pointer;">日本語</button>
-    <button class="langBtn" data-lang="korean" style="margin:5px; padding:5px 10px; cursor:pointer;">한국어</button>
-    <button class="langBtn" data-lang="french" style="margin:5px; padding:5px 10px; cursor:pointer;">Français</button>
-    <button class="langBtn" data-lang="spanish" style="margin:5px; padding:5px 10px; cursor:pointer;">Español</button>
-    <button class="langBtn" data-lang="chinese_simplified" style="margin:5px; padding:5px 10px; cursor:pointer;">中文</button>
-  </div>
-</div>
-
-<script>
-// 添加Debug功能以便排查问题
-function debug(msg) {
-  console.log("[翻译调试] " + msg);
+<style>
+/* 美化谷歌翻译组件的样式 */
+.goog-te-gadget {
+  font-family: Arial, sans-serif;
+  color: #666;
 }
+.goog-te-gadget .goog-te-combo {
+  padding: 6px 10px;
+  border: 1px solid #BE9567;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  margin: 4px;
+}
+.goog-te-banner-frame {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+</style>
 
-// 翻译功能初始化
-document.getElementById('translateBtn').addEventListener('click', function() {
-  var options = document.getElementById('languageOptions');
-  if (options.style.display === 'none') {
-    options.style.display = 'block';
-    
-    // 如果还没加载translate.js，则加载
-    if (typeof translate === 'undefined') {
-      debug("开始加载翻译库...");
-      var script = document.createElement('script');
-      script.src = "https://cdn.staticfile.net/translate.js/3.12.0/translate.js";
-      script.onload = function() {
-        debug("翻译库加载成功!");
-        initTranslate();
-      };
-      script.onerror = function() {
-        debug("翻译库加载失败!");
-        alert("翻译功能加载失败，请刷新页面重试。");
-      };
-      document.body.appendChild(script);
+<script type="text/javascript">
+// 添加谷歌翻译API脚本
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'zh-CN',
+      includedLanguages: 'en,ja,ko,fr,de,es,ru,ar,th,vi', // 支持的语言列表
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    },
+    'google_translate_element'
+  );
+  
+  // 添加一个简单的提示文本
+  setTimeout(function() {
+    var element = document.getElementById('google_translate_element');
+    if (element && element.querySelector('.goog-te-gadget')) {
+      var span = document.createElement('div');
+      span.style.fontSize = '12px';
+      span.style.marginTop = '5px';
+      span.style.color = '#888';
+      span.innerHTML = '← 点击此处选择翻译语言';
+      element.appendChild(span);
     }
-  } else {
-    options.style.display = 'none';
-  }
-});
-
-// 初始化翻译库设置
-function initTranslate() {
-  debug("正在初始化翻译...");
-  // 为所有语言按钮添加点击事件
-  var langBtns = document.getElementsByClassName('langBtn');
-  for (var i = 0; i < langBtns.length; i++) {
-    langBtns[i].addEventListener('click', function() {
-      var lang = this.getAttribute('data-lang');
-      debug("选择语言: " + lang);
-      
-      try {
-        if (lang === 'chinese_simplified') {
-          debug("恢复原始语言");
-          translate.restore();
-        } else {
-          translate.language.setLocal('chinese_simplified');
-          translate.language.setTarget(lang);
-          debug("开始翻译到: " + lang);
-          translate.execute();
-          debug("翻译执行完成");
-        }
-      } catch (e) {
-        debug("翻译出错: " + e.message);
-        alert("翻译过程中出错，请重试!");
-      }
-    });
-  }
-  debug("翻译初始化完成");
+  }, 1000);
 }
+
+// 动态加载谷歌翻译API
+var googleTranslateScript = document.createElement('script');
+googleTranslateScript.type = 'text/javascript';
+googleTranslateScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+document.body.appendChild(googleTranslateScript);
 </script>
 </footer>
