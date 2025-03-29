@@ -377,109 +377,80 @@
 
 <!-- 添加翻译按钮 -->
 <div style="text-align:center; margin:20px 0;">
-  <button id="translateButton" style="padding:8px 15px; background-color:#f0f0f0; border:1px solid #BE9567; border-radius:4px; cursor:pointer; color:#333;">
+  <button id="translateBtn" style="padding:8px 15px; background-color:#f0f0f0; border:1px solid #BE9567; border-radius:4px; cursor:pointer;">
     <span style="display:inline-block; vertical-align:middle; margin-right:5px;">🌐</span>
     <span>翻译/Translate</span>
   </button>
-  
-  <!-- 翻译语言选择(默认隐藏) -->
-  <select id="languageSelect" style="display:none; margin-left:10px; padding:8px; border:1px solid #BE9567; border-radius:4px;">
-    <option value="english">English</option>
-    <option value="japanese">日本語</option>
-    <option value="korean">한국어</option>
-    <option value="french">Français</option>
-    <option value="german">Deutsch</option>
-    <option value="spanish">Español</option>
-    <option value="russian">Русский</option>
-  </select>
+  <div id="languageOptions" style="display:none; margin-top:10px;">
+    <button class="langBtn" data-lang="english" style="margin:5px; padding:5px 10px; cursor:pointer;">English</button>
+    <button class="langBtn" data-lang="japanese" style="margin:5px; padding:5px 10px; cursor:pointer;">日本語</button>
+    <button class="langBtn" data-lang="korean" style="margin:5px; padding:5px 10px; cursor:pointer;">한국어</button>
+    <button class="langBtn" data-lang="french" style="margin:5px; padding:5px 10px; cursor:pointer;">Français</button>
+    <button class="langBtn" data-lang="spanish" style="margin:5px; padding:5px 10px; cursor:pointer;">Español</button>
+    <button class="langBtn" data-lang="chinese_simplified" style="margin:5px; padding:5px 10px; cursor:pointer;">中文</button>
+  </div>
 </div>
 
 <script>
-// 使用一个独立的立即执行函数来隔离我们的代码
-(function() {
-  // 确保页面完全加载后再执行
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTranslateButton);
+// 添加Debug功能以便排查问题
+function debug(msg) {
+  console.log("[翻译调试] " + msg);
+}
+
+// 翻译功能初始化
+document.getElementById('translateBtn').addEventListener('click', function() {
+  var options = document.getElementById('languageOptions');
+  if (options.style.display === 'none') {
+    options.style.display = 'block';
+    
+    // 如果还没加载translate.js，则加载
+    if (typeof translate === 'undefined') {
+      debug("开始加载翻译库...");
+      var script = document.createElement('script');
+      script.src = "https://cdn.staticfile.net/translate.js/3.12.0/translate.js";
+      script.onload = function() {
+        debug("翻译库加载成功!");
+        initTranslate();
+      };
+      script.onerror = function() {
+        debug("翻译库加载失败!");
+        alert("翻译功能加载失败，请刷新页面重试。");
+      };
+      document.body.appendChild(script);
+    }
   } else {
-    // 如果页面已经加载完成，立即初始化
-    initTranslateButton();
+    options.style.display = 'none';
   }
-  
-  function initTranslateButton() {
-    var translateButton = document.getElementById('translateButton');
-    var languageSelect = document.getElementById('languageSelect');
-    var translateJsLoaded = false;
-    
-    // 只在点击翻译按钮时才加载translate.js
-    if (translateButton) {
-      translateButton.addEventListener('click', function() {
-        // 切换语言选择器的显示状态
-        if (languageSelect.style.display === 'none') {
-          languageSelect.style.display = 'inline-block';
-          
-          // 如果尚未加载translate.js库，加载它
-          if (!translateJsLoaded) {
-            loadTranslateJs(function() {
-              translateJsLoaded = true;
-              // 配置翻译库但不执行翻译
-              configureTranslate();
-            });
-          }
+});
+
+// 初始化翻译库设置
+function initTranslate() {
+  debug("正在初始化翻译...");
+  // 为所有语言按钮添加点击事件
+  var langBtns = document.getElementsByClassName('langBtn');
+  for (var i = 0; i < langBtns.length; i++) {
+    langBtns[i].addEventListener('click', function() {
+      var lang = this.getAttribute('data-lang');
+      debug("选择语言: " + lang);
+      
+      try {
+        if (lang === 'chinese_simplified') {
+          debug("恢复原始语言");
+          translate.restore();
         } else {
-          languageSelect.style.display = 'none';
+          translate.language.setLocal('chinese_simplified');
+          translate.language.setTarget(lang);
+          debug("开始翻译到: " + lang);
+          translate.execute();
+          debug("翻译执行完成");
         }
-      });
-    }
-    
-    // 语言选择处理
-    if (languageSelect) {
-      languageSelect.addEventListener('change', function() {
-        if (!translateJsLoaded) return;
-        
-        var selectedLang = this.value;
-        // 配置目标语言并执行翻译
-        try {
-          window.translate.language.setTarget(selectedLang);
-          window.translate.execute();
-        } catch(e) {
-          console.error('Translation error:', e);
-        }
-      });
-    }
+      } catch (e) {
+        debug("翻译出错: " + e.message);
+        alert("翻译过程中出错，请重试!");
+      }
+    });
   }
-  
-  // 动态加载translate.js库
-  function loadTranslateJs(callback) {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.staticfile.net/translate.js/3.12.0/translate.js';
-    script.onload = callback;
-    document.body.appendChild(script);
-  }
-  
-  // 配置translate.js
-  function configureTranslate() {
-    if (window.translate) {
-      // 设置本地语言
-      window.translate.language.setLocal('chinese_simplified');
-      // 使用客户端翻译服务
-      window.translate.service.use('client.edge');
-      
-      // 设置忽略元素
-      window.translate.ignore.class.push('btns-bg');
-      window.translate.ignore.class.push('PlayEy');
-      window.translate.ignore.class.push('Btn');
-      window.translate.ignore.class.push('Play');
-      window.translate.ignore.class.push('muyu-container');
-      window.translate.ignore.class.push('qing-container');
-      window.translate.ignore.class.push('fengling-container');
-      window.translate.ignore.class.push('zhong-container');
-      window.translate.ignore.tag.push('script');
-      window.translate.ignore.tag.push('style');
-      window.translate.ignore.tag.push('audio');
-      
-      // 初始不执行翻译，等待用户选择语言
-    }
-  }
-})();
+  debug("翻译初始化完成");
+}
 </script>
 </footer>
