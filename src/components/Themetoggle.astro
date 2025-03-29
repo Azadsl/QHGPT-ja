@@ -218,6 +218,142 @@ window.addEventListener('resize', adjustFogSize);
   </svg>
 </button>
 
+
+
+<!-- 添加翻译按钮 -->
+<div class="translate-container">
+  <button id="translateBtn" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10" title="翻译">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 8l6 6"></path>
+      <path d="M4 14h7"></path>
+      <path d="M2 5h12"></path>
+      <path d="M9 2v3"></path>
+      <path d="M12 17l5-5"></path>
+      <path d="M11 14l9-9"></path>
+    </svg>
+  </button>
+  <div id="translateMenu" class="translate-menu">
+    <div class="translate-item" data-lang="en">English</div>
+    <div class="translate-item" data-lang="ja">日本語</div>
+    <div class="translate-item" data-lang="ko">한국어</div>
+    <div class="translate-item" data-lang="hi">हिन्दी</div>
+    <div class="translate-item" data-lang="th">ไทย</div>
+  </div>
+</div>
+
+<style>
+  .translate-container {
+    position: fixed;
+    top: 20px;
+    right: 80px;
+    z-index: 100;
+  }
+  
+  .translate-menu {
+    position: absolute;
+    display: none;
+    right: 0;
+    top: 45px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 120px;
+  }
+  
+  .translate-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .translate-item:hover {
+    background-color: #f5f5f5;
+  }
+  
+  :global(html.dark) .translate-menu {
+    background-color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  :global(html.dark) .translate-item:hover {
+    background-color: #444;
+  }
+</style>
+<script type="text/javascript">
+// ... existing script code ...
+
+// 添加翻译功能
+document.addEventListener('DOMContentLoaded', function() {
+  const translateBtn = document.getElementById('translateBtn');
+  const translateMenu = document.getElementById('translateMenu');
+  const translateItems = document.querySelectorAll('.translate-item');
+  
+  // 翻译功能
+  function translatePage(targetLang) {
+    // 方法1: 使用Google翻译API (需要添加Google翻译脚本)
+    if (!window.googleTranslateElementInit) {
+      window.googleTranslateElementInit = function() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'zh-CN',
+          includedLanguages: 'en,ja,ko,hi,th',
+          autoDisplay: false
+        }, 'google_translate_element');
+        
+        // 强制设置语言
+        setTimeout(() => {
+          const langSelect = document.querySelector('.goog-te-combo');
+          if (langSelect) {
+            langSelect.value = targetLang;
+            langSelect.dispatchEvent(new Event('change'));
+          }
+        }, 1000);
+      };
+      
+      const script = document.createElement('script');
+      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      document.body.appendChild(script);
+      
+      // 创建Google翻译元素
+      const translateElement = document.createElement('div');
+      translateElement.id = 'google_translate_element';
+      translateElement.style.display = 'none';
+      document.body.appendChild(translateElement);
+    } else {
+      // 如果已经加载过翻译脚本，直接切换语言
+      const langSelect = document.querySelector('.goog-te-combo');
+      if (langSelect) {
+        langSelect.value = targetLang;
+        langSelect.dispatchEvent(new Event('change'));
+      }
+    }
+  }
+  
+  // 切换菜单显示状态
+  translateBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    translateMenu.style.display = translateMenu.style.display === 'block' ? 'none' : 'block';
+  });
+  
+  // 点击菜单项进行翻译
+  translateItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      translatePage(lang);
+      translateMenu.style.display = 'none';
+    });
+  });
+  
+  // 点击页面其他位置关闭菜单
+  document.addEventListener('click', function(e) {
+    if (!translateBtn.contains(e.target) && !translateMenu.contains(e.target)) {
+      translateMenu.style.display = 'none';
+    }
+  });
+});
+</script>
+
+
 <script type="text/javascript">
       if (! (navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i))) {
       var stop, staticx;
