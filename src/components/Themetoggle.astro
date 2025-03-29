@@ -220,31 +220,25 @@ window.addEventListener('resize', adjustFogSize);
 
 
 
-<!-- 添加翻译按钮 -->
 <div class="translate-container">
   <button id="translateBtn" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10" title="翻译">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M5 8l6 6"></path>
-      <path d="M4 14h7"></path>
-      <path d="M2 5h12"></path>
-      <path d="M9 2v3"></path>
-      <path d="M12 17l5-5"></path>
-      <path d="M11 14l9-9"></path>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.87 15.07L10.33 12.56L10.36 12.53C12.1 10.59 13.34 8.36 14.07 6H17V4H10V2H8V4H1V6H12.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8H4.69C5.42 9.63 6.42 11.17 7.67 12.56L2.58 17.58L4 19L9 14L12.11 17.11L12.87 15.07ZM18.5 10H16.5L12 22H14L15.12 19H19.87L21 22H23L18.5 10ZM15.88 17L17.5 12.67L19.12 17H15.88Z"/>
     </svg>
   </button>
   <div id="translateMenu" class="translate-menu">
-    <div class="translate-item" data-lang="en">English</div>
-    <div class="translate-item" data-lang="ja">日本語</div>
-    <div class="translate-item" data-lang="ko">한국어</div>
-    <div class="translate-item" data-lang="hi">हिन्दी</div>
-    <div class="translate-item" data-lang="th">ไทย</div>
+    <a href="#" class="translate-item" data-lang="en">English</a>
+    <a href="#" class="translate-item" data-lang="ja">日本語</a>
+    <a href="#" class="translate-item" data-lang="ko">한국어</a>
+    <a href="#" class="translate-item" data-lang="hi">हिन्दी</a>
+    <a href="#" class="translate-item" data-lang="th">ไทย</a>
   </div>
 </div>
 
 <style>
   .translate-container {
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 80px;
     z-index: 100;
   }
@@ -253,7 +247,7 @@ window.addEventListener('resize', adjustFogSize);
     position: absolute;
     display: none;
     right: 0;
-    top: 45px;
+    bottom: 45px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -262,95 +256,67 @@ window.addEventListener('resize', adjustFogSize);
   }
   
   .translate-item {
+    display: block;
     padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.2s;
+    text-decoration: none;
+    color: #333;
   }
   
   .translate-item:hover {
     background-color: #f5f5f5;
   }
   
-  :global(html.dark) .translate-menu {
+  html.dark .translate-menu {
     background-color: #333;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
   
-  :global(html.dark) .translate-item:hover {
+  html.dark .translate-item {
+    color: #fff;
+  }
+  
+  html.dark .translate-item:hover {
     background-color: #444;
   }
 </style>
-<script type="text/javascript">
-// ... existing script code ...
 
-// 添加翻译功能
-document.addEventListener('DOMContentLoaded', function() {
-  const translateBtn = document.getElementById('translateBtn');
-  const translateMenu = document.getElementById('translateMenu');
-  const translateItems = document.querySelectorAll('.translate-item');
-  
-  // 翻译功能
-  function translatePage(targetLang) {
-    // 方法1: 使用Google翻译API (需要添加Google翻译脚本)
-    if (!window.googleTranslateElementInit) {
-      window.googleTranslateElementInit = function() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'zh-CN',
-          includedLanguages: 'en,ja,ko,hi,th',
-          autoDisplay: false
-        }, 'google_translate_element');
-        
-        // 强制设置语言
-        setTimeout(() => {
-          const langSelect = document.querySelector('.goog-te-combo');
-          if (langSelect) {
-            langSelect.value = targetLang;
-            langSelect.dispatchEvent(new Event('change'));
-          }
-        }, 1000);
-      };
-      
-      const script = document.createElement('script');
-      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      document.body.appendChild(script);
-      
-      // 创建Google翻译元素
-      const translateElement = document.createElement('div');
-      translateElement.id = 'google_translate_element';
-      translateElement.style.display = 'none';
-      document.body.appendChild(translateElement);
-    } else {
-      // 如果已经加载过翻译脚本，直接切换语言
-      const langSelect = document.querySelector('.goog-te-combo');
-      if (langSelect) {
-        langSelect.value = targetLang;
-        langSelect.dispatchEvent(new Event('change'));
-      }
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const translateBtn = document.getElementById('translateBtn');
+    const translateMenu = document.getElementById('translateMenu');
+    const translateItems = document.querySelectorAll('.translate-item');
+    
+    // 翻译功能 - 使用直接跳转到Google翻译页面的方式
+    function translatePage(targetLang) {
+      const currentUrl = window.location.href;
+      const googleTranslateUrl = `https://translate.google.com/translate?sl=auto&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
+      window.open(googleTranslateUrl, '_blank');
     }
-  }
-  
-  // 切换菜单显示状态
-  translateBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    translateMenu.style.display = translateMenu.style.display === 'block' ? 'none' : 'block';
-  });
-  
-  // 点击菜单项进行翻译
-  translateItems.forEach(item => {
-    item.addEventListener('click', function() {
-      const lang = this.getAttribute('data-lang');
-      translatePage(lang);
-      translateMenu.style.display = 'none';
+    
+    // 切换菜单显示状态
+    translateBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      translateMenu.style.display = translateMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // 点击菜单项进行翻译
+    translateItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const lang = this.getAttribute('data-lang');
+        translatePage(lang);
+        translateMenu.style.display = 'none';
+      });
+    });
+    
+    // 点击页面其他位置关闭菜单
+    document.addEventListener('click', function(e) {
+      if (!translateBtn.contains(e.target) && !translateMenu.contains(e.target)) {
+        translateMenu.style.display = 'none';
+      }
     });
   });
-  
-  // 点击页面其他位置关闭菜单
-  document.addEventListener('click', function(e) {
-    if (!translateBtn.contains(e.target) && !translateMenu.contains(e.target)) {
-      translateMenu.style.display = 'none';
-    }
-  });
-});
 </script>
 
 
