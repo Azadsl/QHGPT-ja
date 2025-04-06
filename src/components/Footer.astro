@@ -130,13 +130,15 @@
       b-slate-link
       href="https://chatbodhi.aihub.ren/" target="_blank"
     >
-      en
-    </a>  <span px-1>|</span>
-    <button id="translateToggle" style="background:none; border:none; padding:0; cursor:pointer; font-size:inherit; color:inherit; display:inline-flex; align-items:center;">
-      <i class="fas fa-language" style="margin-right:4px;"></i>翻译
-    </button>
-    <!-- 翻译组件iframe，初始隐藏 -->
-    <iframe id="translateFrame" src="translate.html" style="display:none; border:none; width:200px; height:50px; position:absolute; z-index:1000; background:transparent;" frameborder="0"></iframe>
+      en </a>
+    <span px-1>|</span>
+    <span style="position: relative; display: inline-block;">
+      <button id="translateToggle" style="background:none; border:none; padding:0; cursor:pointer; font-size:inherit; color:inherit; display:inline-flex; align-items:center;">
+        <i class="fas fa-language" style="margin-right:4px;"></i>翻译
+      </button>
+      <!-- 直接在页面中创建翻译下拉菜单，而不是使用iframe -->
+      <div id="translateDropdown" class="translate-dropdown"></div>
+    </span>
   </p>
   <p mt-8 text-xs op-30>
   <button id="toggleExplanation" style="background: none; border: none; padding: 0; font-size: inherit; color: inherit; cursor: pointer; display: flex; align-items: center;">
@@ -172,61 +174,63 @@
     toggleIcon.textContent = explanationText.hidden ? '▼' : '▲';
   });
 
-  // 翻译功能 - 使用嵌入式iframe
-  const translateToggle = document.getElementById('translateToggle');
-  const translateFrame = document.getElementById('translateFrame');
-  let translateVisible = false;
-
-  translateToggle.addEventListener('click', (e) => {
-    e.preventDefault();
-    translateVisible = !translateVisible;
-    
-    if (translateVisible) {
-      // 计算位置，将iframe放在按钮附近
-      const buttonRect = translateToggle.getBoundingClientRect();
-      translateFrame.style.top = (buttonRect.bottom + 10) + 'px';
-      translateFrame.style.left = (buttonRect.left) + 'px';
-      
-      // 传递当前主题状态
-      const isDarkMode = document.body.classList.contains('dark-mode');
-      translateFrame.src = `translate.html?darkMode=${isDarkMode}`;
-      
-      // 显示iframe
-      translateFrame.style.display = 'block';
-    } else {
-      // 隐藏iframe
-      translateFrame.style.display = 'none';
-    }
-  });
-
-  // 点击页面其他区域时隐藏翻译框
-  document.addEventListener('click', (e) => {
-    if (translateVisible && e.target !== translateToggle && !translateFrame.contains(e.target)) {
-      translateVisible = false;
-      translateFrame.style.display = 'none';
-    }
-  });
-
-  // 监听来自iframe的语言变化事件
-  document.addEventListener('translateLanguageChanged', function(e) {
-    const language = e.detail.language;
-    translate.changeLanguage(language);
-    translate.execute();
-  });
-
   // 初始化翻译功能
   document.addEventListener('DOMContentLoaded', function() {
-    // 添加所需的字体图标
-    if (!document.querySelector('link[href*="font-awesome"]')) {
-      const fontAwesome = document.createElement('link');
-      fontAwesome.rel = 'stylesheet';
-      fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-      document.head.appendChild(fontAwesome);
-    }
-
-    // 初始化翻译
+    // 初始化翻译插件
     translate.setUseVersion2();
     translate.execute();
+    
+    // 获取翻译下拉菜单容器
+    const translateDropdown = document.getElementById('translateDropdown');
+    const translateToggle = document.getElementById('translateToggle');
+    
+    // 初始化翻译选择器
+    setTimeout(function() {
+      // 找到自动创建的翻译选择器并移动到我们的下拉菜单中
+      const originalSelect = document.getElementById('translate');
+      if (originalSelect) {
+        translateDropdown.appendChild(originalSelect);
+        
+        // 为选择器添加变更事件
+        originalSelect.addEventListener('change', function() {
+          const selectedValue = originalSelect.value;
+          localStorage.setItem('selectedLanguage', selectedValue);
+          translate.changeLanguage(selectedValue);
+          translate.execute();
+          
+          // 选择后隐藏下拉菜单
+          translateDropdown.style.display = 'none';
+        });
+      }
+    }, 500);
+    
+    // 切换翻译下拉菜单显示/隐藏
+    translateToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      
+      // 计算位置
+      const buttonRect = translateToggle.getBoundingClientRect();
+      translateDropdown.style.top = (buttonRect.bottom + 10) + 'px';
+      translateDropdown.style.left = (buttonRect.left) + 'px';
+      
+      // 检查是否应该应用深色模式
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      translateDropdown.classList.toggle('dark-mode', isDarkMode);
+      
+      // 切换显示状态
+      if (translateDropdown.style.display === 'block') {
+        translateDropdown.style.display = 'none';
+      } else {
+        translateDropdown.style.display = 'block';
+      }
+    });
+    
+    // 点击页面其他区域时隐藏下拉菜单
+    document.addEventListener('click', function(e) {
+      if (e.target !== translateToggle && !translateDropdown.contains(e.target)) {
+        translateDropdown.style.display = 'none';
+      }
+    });
     
     // 从localStorage加载保存的语言
     const savedLanguage = localStorage.getItem('selectedLanguage');
@@ -234,10 +238,21 @@
       setTimeout(() => {
         translate.changeLanguage(savedLanguage);
         translate.execute();
-      }, 500);
+        
+        // 更新选择器的选中值
+        const translateSelect = document.getElementById('translate');
+        if (translateSelect) {
+          translateSelect.value = savedLanguage;
+        }
+      }, 600);
     }
   });
 </script>
+
+
+
+
+
   <br>
   <link
     rel="stylesheet"
