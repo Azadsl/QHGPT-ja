@@ -1,5 +1,6 @@
 <footer>
-
+<!-- Added translation script -->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script async src="https://api.ly522.com/js/jilei.pure.mini.js"></script>
   <p mt-8 text-xs op-30 align="center">
@@ -7,98 +8,86 @@
     <span px-1>，</span>
     云在青天水在瓶
   </p>
-  
-
-<div class="btns-bg"> 
-  <div class="PlayEy"></div> 
-  <div class="Btn"></div> 
-  <div class="Play"> 
-    <audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3" loop></audio> 
-  </div> 
-</div> 
-
-<style type='text/css'> 
-  .PlayEy { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    width: 150px; 
-    height: 150px; 
-    background: url(img/bg_center.png) no-repeat center; 
-  } 
-  
-  .Btn { 
-    position: absolute; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    width: 58px; 
-    height: 58px; 
-    background-color: yellow; 
-    background: url(img/btn-bg.png) no-repeat; 
-    animation: Btn-bg 3s linear infinite; 
-  } 
-  
-  .Play { 
-    position: absolute; 
-    width: 18px; 
-    height: 23px; 
-    background: red; 
-    background: url(img/pause.png) no-repeat; 
-    transition: .5s; 
-  } 
-  
-  .btns-bg { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    margin: 30px auto; 
-    width: 150px; 
-    height: 150px; 
-    z-index: 9999; 
+<div class="btns-bg">
+  <div class="PlayEy"></div>
+  <div class="Btn"></div>
+  <div class="Play">
+    <audio id="audios" src="https://music.163.com/song/media/outer/url?id=29999568.mp3" loop></audio>
+  </div>
+</div>
+<style type='text/css'>
+  .PlayEy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    background: url(img/bg_center.png) no-repeat center;
+  }
+  .Btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 58px;
+    height: 58px;
+    background-color: yellow;
+    background: url(img/btn-bg.png) no-repeat;
+    animation: Btn-bg 3s linear infinite;
+  }
+  .Play {
+    position: absolute;
+    width: 18px;
+    height: 23px;
+    background: red;
+    background: url(img/pause.png) no-repeat;
+    transition: .5s;
+  }
+  .btns-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    width: 150px;
+    height: 150px;
+    z-index: 9999;
     border: 2px solid #ddd;  /* 添加的小边框 */
     border-radius: 50%;      /* 确保边框是圆形的 */
     padding: 2px;            /* 添加一点内边距 */
-  } 
-  
-  @keyframes Btn-bg { 
-    from {} 
-    to { 
-      transform: rotate(360deg); 
-    } 
-  } 
-</style> 
-
-<script type="text/javascript"> 
-  var i = 0; 
-  var oPlayEy = document.getElementsByClassName("PlayEy")[0]; 
-  var oPlay = document.getElementsByClassName("Play")[0]; 
-  var audios = document.getElementById('audios'); 
-  
-  oPlay.onclick = function() { 
-    var seii = setInterval(function() { 
-      (i == 360) ? i = 0 : i++; 
-      oPlayEy.style.transform = "rotate(" + i + "deg)"; 
-      if(audios.paused) { 
-        clearInterval(seii) 
-      } 
-    }, 30); 
-    
-    if(audios.paused) { 
-      audios.play(); 
-      oPlay.style.backgroundImage = "url(img/play.png)"; 
-      oPlay.style.width = 20 + "px"; 
-      oPlay.style.height = 20 + "px"; 
-    } else { 
-      audios.pause(); 
-      oPlay.style.backgroundImage = "url(img/pause.png)"; 
-      oPlay.style.width = 18 + "px"; 
-      oPlay.style.height = 23 + "px"; 
-    } 
-  } 
+  }
+  @keyframes Btn-bg {
+    from {}
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+<script type="text/javascript">
+  var i = 0;
+  var oPlayEy = document.getElementsByClassName("PlayEy")[0];
+  var oPlay = document.getElementsByClassName("Play")[0];
+  var audios = document.getElementById('audios');
+  oPlay.onclick = function() {
+    var seii = setInterval(function() {
+      (i == 360) ? i = 0 : i++;
+      oPlayEy.style.transform = "rotate(" + i + "deg)";
+      if(audios.paused) {
+        clearInterval(seii)
+      }
+    }, 30);
+    if(audios.paused) {
+      audios.play();
+      oPlay.style.backgroundImage = "url(img/play.png)";
+      oPlay.style.width = 20 + "px";
+      oPlay.style.height = 20 + "px";
+    } else {
+      audios.pause();
+      oPlay.style.backgroundImage = "url(img/pause.png)";
+      oPlay.style.width = 18 + "px";
+      oPlay.style.height = 23 + "px";
+    }
+  }
 </script>
-
-
    <p mt-8 text-xs op-30>
 <span pr-1>已有<svg t="1682581321137" class="icon" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1846" width="1em" height="1em"><path d="m11.09409,9.32471l0.04395,0l0,-0.65089l0.70319,0c0.19338,0 0.3516,-0.14737 0.3516,-0.32749s-0.15822,-0.32749 -0.3516,-0.32749l-1.58658,0l0,-1.10733c0,-0.01433 -0.00439,-0.02866 -0.01099,-0.04094c0.14503,-0.04094 0.25271,-0.16579 0.25271,-0.31316l0,-5.89485c0,-0.18012 -0.15822,-0.32749 -0.3516,-0.32749s-0.3516,0.14737 -0.3516,0.32749l0,5.89485c0,0.14737 0.10768,0.27427 0.25271,0.31316c-0.00659,0.01228 -0.01099,0.02661 -0.01099,0.04094l0,1.10733l-1.95136,0l0,-1.10733c0,-0.01433 -0.00439,-0.02866 -0.01099,-0.04094c0.14503,-0.04094 0.25271,-0.16579 0.25271,-0.31316l0,-5.89485c0,-0.18012 -0.15822,-0.32749 -0.3516,-0.32749s-0.3516,0.14737 -0.3516,0.32749l0,5.89485c0,0.14737 0.10768,0.27427 0.25271,0.31316c-0.00659,0.01228 -0.01099,0.02661 -0.01099,0.04094l0,1.10733l-1.95136,0l0,-1.10733c0,-0.01433 -0.00439,-0.02866 -0.01099,-0.04094c0.14503,-0.04094 0.25271,-0.16579 0.25271,-0.31316l0,-5.89485c0,-0.18012 -0.15822,-0.32749 -0.3516,-0.32749s-0.3516,0.14737 -0.3516,0.32749l0,5.89485c0,0.14737 0.10768,0.27427 0.25271,0.31316c-0.00659,0.01228 -0.01099,0.02661 -0.01099,0.04094l0,1.10733l-1.58658,0c-0.19338,0 -0.3516,0.14737 -0.3516,0.32749s0.15822,0.32749 0.3516,0.32749l0.70319,0l0,0.65089l0.04395,0c-1.14049,0.09825 -2.04365,1.0009 -2.04365,2.08776l0,1.04593c0,0.90674 0.62408,1.68249 1.49428,1.97314l-0.33402,0.31112c-0.27249,0.25381 -0.27249,0.67136 0,0.92721c0.27249,0.25381 0.72077,0.25381 0.99546,0l0.99546,-0.92721c0.05933,-0.05526 0.10768,-0.11872 0.14064,-0.18831l3.76208,0c0.03296,0.06755 0.08131,0.131 0.14064,0.18831l0.99546,0.92721c0.27249,0.25381 0.72077,0.25381 0.99546,0c0.27249,-0.25381 0.27249,-0.67136 0,-0.92721l-0.33621,-0.31316c0.86361,-0.29474 1.4833,-1.06844 1.4833,-1.97109l0,-1.04593c-0.00439,-1.08686 -0.90536,-1.98747 -2.04805,-2.08776z" fill="#BE9567" p-id="1847"></path></svg>香火&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;次</span>
 <span><svg t="1682581361285" class="icon" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2202" width="1em" height="1em"><path d="m8.92507,9.96134c-0.82216,1.68682 -1.89839,3.12374 -3.11399,4.25007l1.48731,0c1.6655,0 3.02754,-1.37802 3.02754,-3.06305l0,-0.87465c0,-0.74613 -0.26817,-1.43335 -0.71101,-1.96706c-0.19407,0.55513 -0.42343,1.1067 -0.68984,1.65469zm-2.95344,-0.12673c1.6655,0 3.02754,-1.37802 3.02754,-3.06305l0,-0.87465c0,-1.68504 -1.36204,-3.06305 -3.02754,-3.06305c-1.6655,0 -3.02754,1.37802 -3.02754,3.06305l0,0.87465c0,1.68325 1.3638,3.06305 3.02754,3.06305zm-3.64681,-1.5226c-0.43931,0.53193 -0.70572,1.21558 -0.70572,1.95992l0,0.87465c0,1.62613 1.26853,2.96666 2.85464,3.0577c0.78864,-0.61404 1.52083,-1.3566 2.17009,-2.19733c-1.80488,-0.51051 -3.30101,-1.85104 -4.31901,-3.69494zm7.30244,-1.83498c0.39167,0.60868 1.06917,1.01388 1.83664,1.01388c1.20325,0 2.1895,-0.99603 2.1895,-2.21518l0,-0.63189c0,-1.21737 -0.98448,-2.21518 -2.1895,-2.21518c-1.04799,0 -1.93014,0.75505 -2.1401,1.75465c0.19937,0.46767 0.30346,0.97461 0.30346,1.49761l0,0.79611zm0.83804,1.84569c0.32816,0.53371 0.52223,1.1424 0.56281,1.76893c0.3264,-0.31237 0.63515,-0.65688 0.92096,-1.02816c-0.53458,-0.15172 -1.03212,-0.40341 -1.48378,-0.74077zm3.63269,-1.93494c-0.13938,0.39984 -0.30522,0.80146 -0.4993,1.19595c-0.5928,1.21915 -1.37263,2.25802 -2.25125,3.07198l1.07446,0c1.20325,0 2.1895,-0.99603 2.1895,-2.21518l0,-0.63189c0,-0.53907 -0.19407,-1.0353 -0.51341,-1.42086z" fill="#BE9567" p-id="2203"></path></svg>善信&nbsp;<span id="busuanzi_value_site_uv"></span>&nbsp;人</span>
@@ -125,20 +114,21 @@
     >
       问道 · 众妙之门
     </a>
- <span px-1>|</span>
+<span px-1>|</span>
     <a
       b-slate-link
       href="https://chatbodhi.aihub.ren/" target="_blank"
     >
-      en </a>
+      en
+    </a>
+    <!-- Added translation button -->
     <span px-1>|</span>
-    <span style="position: relative; display: inline-block;">
-      <button id="translateToggle" style="background:none; border:none; padding:0; cursor:pointer; font-size:inherit; color:inherit; display:inline-flex; align-items:center;">
-        <i class="fas fa-language" style="margin-right:4px;"></i>翻译
-      </button>
-      <!-- 直接在页面中创建翻译下拉菜单，而不是使用iframe -->
-      <div id="translateDropdown" class="translate-dropdown"></div>
-    </span>
+    <a
+      b-slate-link
+      href="javascript:void(0)" id="translateBtn"
+    >
+      翻译
+    </a>
   </p>
   <p mt-8 text-xs op-30>
   <button id="toggleExplanation" style="background: none; border: none; padding: 0; font-size: inherit; color: inherit; cursor: pointer; display: flex; align-items: center;">
@@ -163,9 +153,7 @@
    <p mt-3 text-xs op-30>
     4. 无论如何，请保持平和、欢喜与慈悲。如佛经所言： <strong>"应无所住，而生其心"</strong>。
   </p>
-
 </div>
-
 <script>
   document.getElementById('toggleExplanation').addEventListener('click', function() {
     const explanationText = document.getElementById('explanationText');
@@ -173,86 +161,7 @@
     explanationText.hidden = !explanationText.hidden;
     toggleIcon.textContent = explanationText.hidden ? '▼' : '▲';
   });
-
-  // 初始化翻译功能
-  document.addEventListener('DOMContentLoaded', function() {
-    // 初始化翻译插件
-    translate.setUseVersion2();
-    translate.execute();
-    
-    // 获取翻译下拉菜单容器
-    const translateDropdown = document.getElementById('translateDropdown');
-    const translateToggle = document.getElementById('translateToggle');
-    
-    // 初始化翻译选择器
-    setTimeout(function() {
-      // 找到自动创建的翻译选择器并移动到我们的下拉菜单中
-      const originalSelect = document.getElementById('translate');
-      if (originalSelect) {
-        translateDropdown.appendChild(originalSelect);
-        
-        // 为选择器添加变更事件
-        originalSelect.addEventListener('change', function() {
-          const selectedValue = originalSelect.value;
-          localStorage.setItem('selectedLanguage', selectedValue);
-          translate.changeLanguage(selectedValue);
-          translate.execute();
-          
-          // 选择后隐藏下拉菜单
-          translateDropdown.style.display = 'none';
-        });
-      }
-    }, 500);
-    
-    // 切换翻译下拉菜单显示/隐藏
-    translateToggle.addEventListener('click', function(e) {
-      e.stopPropagation();
-      
-      // 计算位置
-      const buttonRect = translateToggle.getBoundingClientRect();
-      translateDropdown.style.top = (buttonRect.bottom + 10) + 'px';
-      translateDropdown.style.left = (buttonRect.left) + 'px';
-      
-      // 检查是否应该应用深色模式
-      const isDarkMode = document.body.classList.contains('dark-mode');
-      translateDropdown.classList.toggle('dark-mode', isDarkMode);
-      
-      // 切换显示状态
-      if (translateDropdown.style.display === 'block') {
-        translateDropdown.style.display = 'none';
-      } else {
-        translateDropdown.style.display = 'block';
-      }
-    });
-    
-    // 点击页面其他区域时隐藏下拉菜单
-    document.addEventListener('click', function(e) {
-      if (e.target !== translateToggle && !translateDropdown.contains(e.target)) {
-        translateDropdown.style.display = 'none';
-      }
-    });
-    
-    // 从localStorage加载保存的语言
-    const savedLanguage = localStorage.getItem('selectedLanguage');
-    if (savedLanguage) {
-      setTimeout(() => {
-        translate.changeLanguage(savedLanguage);
-        translate.execute();
-        
-        // 更新选择器的选中值
-        const translateSelect = document.getElementById('translate');
-        if (translateSelect) {
-          translateSelect.value = savedLanguage;
-        }
-      }, 600);
-    }
-  });
 </script>
-
-
-
-
-
   <br>
   <link
     rel="stylesheet"
@@ -262,7 +171,6 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/github-markdown-css/2.2.1/github-markdown.css"
   />
-  
   <!-- 电子木鱼代码开始 -->
 <div style="margin-top: 30px; margin-bottom: 10px; display: flex; gap: 6px; justify-content: center;">
     <style>
@@ -296,38 +204,32 @@
             <path d="M84.60774739 747.89580078c-8.94287109 56.47412109 31.66875 88.91191406 52.40654297 98.75566406 20.73691406 9.82441406 55.61191406 0 69.28066406 0 102.43037109 9.82441406 322.34677734 115.33007813 596.4319336 115.33007813 0 0 443.52685547 6.54345703 477.5203125-316.83515625 8.08066406-83.96191406 4.29345703-243.85957031-62.4375-251.50957031-56.21132813-7.40654297-89.75478516 3.58066406-161.11669922 18.07470703-47.38095703 9.59941406-166.12382812 26.34345703-187.14199219 39.52441406-229.38574219 104.34287109-354.48398437 179.62382812-388.74023437 190.83603516-25.875 0-48.31787109-6.46875-54.58007813-61.49970703 0-22.59316406 86.21191406-76.5 123.16728516-85.2178711 133.92949219-35.325 233.86640625-50.73662109 245.60332031-50.73662109 16.93125 0 388.02832031-89.28720703 399.40927734-97.72470703 11.38095703-8.4375 23.4-16.68691406 23.4-46.1803711 0-13.5-29.71845703-43.65-63.5625-80.38037109-40.14316406-43.55595703-87.84228516-94.12470703-123.57949218-106.16220703-65.84941406-33.75-194.92382813-61.76162109-307.68486329-49.03066406-246.84082031 27.86220703-400.87177734 298.02832031-414.27773437 316.77890625-56.99882812 79.72382812-102.43037109 180.69169922-126.27949219 225.26015625C159.40179036 650.22734375 93.62708333 708.12705078 84.60774739 747.89580078z" fill="#b8976d"></path>
         </svg>
     </div>
- <div class="fengling-container">
+<div class="fengling-container">
         <img class="fengling" src="fengling.png">
     </div>
     <div class="qing-container">
         <img class="qing" src="qing.png">
     </div>
-   
     <div class="zhong-container">
         <img class="zhong" src="zhong.png">
     </div>
-
     <!-- 添加音频元素 -->
     <audio id="muyuSound" src="muyu.mp3"></audio>
     <audio id="qingSound" src="qing.mp3"></audio>
     <audio id="fenglingSound" src="fengling.mp3"></audio>
     <audio id="zhongSound" src="zhong.mp3"></audio>
-    
     <script>
         const muyu = document.querySelector('.muyu');
         const qing = document.querySelector('.qing');
         const fengling = document.querySelector('.fengling');
         const zhong = document.querySelector('.zhong');
         const gongdeContainer = document.getElementById('gongdeContainer');
-        
         let muyuAudio = document.getElementById('muyuSound');
         let qingAudio = document.getElementById('qingSound');
         let fenglingAudio = document.getElementById('fenglingSound');
         let zhongAudio = document.getElementById('zhongSound');
-        
         // 修复iOS等设备需要用户交互后才能播放的问题
         let isAudioReady = false;
-        
         function initAudio() {
             // 重新创建音频对象确保可以循环播放
             muyuAudio = new Audio('muyu.mp3');
@@ -340,7 +242,6 @@
             zhongAudio.load();
             isAudioReady = true;
         }
-        
         function playMuyuSound() {
             if (!isAudioReady) {
                 initAudio();
@@ -353,7 +254,6 @@
                 console.log('音频播放失败，请检查浏览器设置');
             }
         }
-        
         function playQingSound() {
             if (!isAudioReady) {
                 initAudio();
@@ -366,7 +266,6 @@
                 console.log('音频播放失败，请检查浏览器设置');
             }
         }
-        
         function playFenglingSound() {
             if (!isAudioReady) {
                 initAudio();
@@ -379,7 +278,6 @@
                 console.log('音频播放失败，请检查浏览器设置');
             }
         }
-        
         function playZhongSound() {
             if (!isAudioReady) {
                 initAudio();
@@ -392,7 +290,6 @@
                 console.log('音频播放失败，请检查浏览器设置');
             }
         }
-        
         // 木鱼点击处理函数
         function handleMuyuKnock() {
             muyu.style.transform = 'scale(0.95)';
@@ -401,7 +298,6 @@
             }, 100);
             playMuyuSound();
         }
-        
         // 磬点击处理函数
         function handleQingKnock() {
             qing.style.transform = 'scale(0.95)';
@@ -410,7 +306,6 @@
             }, 100);
             playQingSound();
         }
-        
         // 风铃点击处理函数
         function handleFenglingKnock() {
             fengling.style.transform = 'scale(0.95)';
@@ -419,7 +314,6 @@
             }, 100);
             playFenglingSound();
         }
-        
         // 钟点击处理函数
         function handleZhongKnock() {
             zhong.style.transform = 'scale(0.95)';
@@ -428,44 +322,52 @@
             }, 100);
             playZhongSound();
         }
-        
         // 木鱼事件监听
         muyu.addEventListener('click', handleMuyuKnock);
         muyu.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleMuyuKnock();
         });
-        
         // 磬事件监听
         qing.addEventListener('click', handleQingKnock);
         qing.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleQingKnock();
         });
-        
         // 风铃事件监听
         fengling.addEventListener('click', handleFenglingKnock);
         fengling.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleFenglingKnock();
         });
-        
         // 钟事件监听
         zhong.addEventListener('click', handleZhongKnock);
         zhong.addEventListener('touchstart', (e) => {
             e.preventDefault();
             handleZhongKnock();
         });
-        
         // 首次触摸事件初始化音频
-        document.addEventListener('touchstart', initAudio, { once: true });
+                document.addEventListener('touchstart', initAudio, { once: true });
         document.addEventListener('click', initAudio, { once: true });
     </script>
-
-
 </div>
   <!-- 电子木鱼代码结束 -->
 
-
-
+<!-- 添加翻译功能的脚本 -->
+<script type="text/javascript">
+  // 添加翻译按钮的点击事件
+  document.getElementById('translateBtn').addEventListener('click', function() {
+    // 如果翻译控件已经存在，则不再初始化
+    if (!window.translate || !window.translate.isInitialized) {
+      //translate.ignore.tag.push('span'); //翻译时追加上自己想指定忽略的tag标签，凡是在这里面的，都不进行翻译。
+      //translate.ignore.class.push('test'); //翻译时指定忽略的class name，凡是class name 在这里面的，都不进行翻译。如果不设置默认只有 ignore 这一个
+      //translate.setAutoDiscriminateLocalLanguage(); //设置用户第一次用时，自动识别其所在国家的语种进行切换
+      translate.setUseVersion2(); //设置使用v2.x 版本
+      translate.execute(); //执行翻译初始化操作，显示出select语言选择
+    } else {
+      // 如果已经初始化，则切换翻译控件的显示
+      translate.toggleTranslateWidget();
+    }
+  });
+</script>
 </footer>
