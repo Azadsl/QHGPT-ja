@@ -350,33 +350,39 @@
 </div>
 <!-- 电子木鱼代码结束 -->
 
-<!-- 翻译按钮处理脚本 -->
-<script is:inline src="https://res.zvo.cn/translate/translate.js"></script>
-<script is:inline>
+</footer>
+<!-- 将翻译脚本放在页面底部 -->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  // 等待文档加载完成
   document.addEventListener('DOMContentLoaded', function() {
-    // 获取翻译按钮
-    const translateBtn = document.getElementById('translateBtn');
-    if (translateBtn) {
-      // 为翻译按钮添加点击事件
-      translateBtn.addEventListener('click', function() {
-        if (typeof translate !== 'undefined') {
-          // 如果翻译下拉框未初始化，则初始化
-          if (!translate.isInitialized) {
-            // 翻译组件配置
-            translate.setUseVersion2(); // 使用v2版本
-            translate.execute(); // 执行翻译初始化，显示语言选择器
-            
-            // 标记已初始化
-            translate.isInitialized = true;
+    // 配置翻译组件
+    if (typeof translate !== 'undefined') {
+      // 存储翻译组件是否已显示
+      let isWidgetVisible = false;
+      
+      // 获取翻译按钮并添加点击事件
+      const translateBtn = document.getElementById('translateBtn');
+      if (translateBtn) {
+        translateBtn.addEventListener('click', function() {
+          if (!isWidgetVisible) {
+            // 第一次点击：初始化翻译组件并显示
+            translate.setUseVersion2(); // 设置使用v2.x版本
+            translate.execute(); // 执行翻译初始化，显示语言选择下拉框
+            isWidgetVisible = true;
           } else {
-            // 如果已初始化，则切换翻译下拉框的显示/隐藏
-            translate.toggleTranslateWidget();
+            // 再次点击：切换语言选择下拉框的显示状态
+            const selectElement = document.querySelector('.translateSelectLanguage');
+            if (selectElement) {
+              if (selectElement.style.display === 'none') {
+                selectElement.style.display = '';
+              } else {
+                selectElement.style.display = 'none';
+              }
+            }
           }
-        } else {
-          console.error('翻译组件未成功加载');
-        }
-      });
+        });
+      }
     }
   });
 </script>
-</footer>
