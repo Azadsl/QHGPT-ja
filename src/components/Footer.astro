@@ -1,4 +1,5 @@
 <footer>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script async src="https://api.ly522.com/js/jilei.pure.mini.js"></script>
   <p mt-8 text-xs op-30 align="center">
@@ -120,12 +121,7 @@
       en
     </a>
     <span px-1>|</span>
-    <a
-      b-slate-link
-      href="javascript:void(0);" id="translateBtn"
-    >
-      翻译
-    </a>
+    <a b-slate-link href="javascript:void(0);" id="translateBtn"><i class="fas fa-language"></i>翻译</a>
   </p>
   <p mt-8 text-xs op-30>
   <button id="toggleExplanation" style="background: none; border: none; padding: 0; font-size: inherit; color: inherit; cursor: pointer; display: flex; align-items: center;">
@@ -351,38 +347,3 @@
 <!-- 电子木鱼代码结束 -->
 
 </footer>
-<!-- 将翻译脚本放在页面底部 -->
-<script src="https://res.zvo.cn/translate/translate.js"></script>
-<script>
-  // 等待文档加载完成
-  document.addEventListener('DOMContentLoaded', function() {
-    // 配置翻译组件
-    if (typeof translate !== 'undefined') {
-      // 存储翻译组件是否已显示
-      let isWidgetVisible = false;
-      
-      // 获取翻译按钮并添加点击事件
-      const translateBtn = document.getElementById('translateBtn');
-      if (translateBtn) {
-        translateBtn.addEventListener('click', function() {
-          if (!isWidgetVisible) {
-            // 第一次点击：初始化翻译组件并显示
-            translate.setUseVersion2(); // 设置使用v2.x版本
-            translate.execute(); // 执行翻译初始化，显示语言选择下拉框
-            isWidgetVisible = true;
-          } else {
-            // 再次点击：切换语言选择下拉框的显示状态
-            const selectElement = document.querySelector('.translateSelectLanguage');
-            if (selectElement) {
-              if (selectElement.style.display === 'none') {
-                selectElement.style.display = '';
-              } else {
-                selectElement.style.display = 'none';
-              }
-            }
-          }
-        });
-      }
-    }
-  });
-</script>
