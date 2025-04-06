@@ -119,9 +119,13 @@
     >
       en
     </a>
-    <!-- 添加翻译按钮 -->
     <span px-1>|</span>
-    <a b-slate-link href="javascript:void(0);" id="translate-btn">翻译</a>
+    <a
+      b-slate-link
+      href="javascript:void(0);" id="translateBtn"
+    >
+      翻译
+    </a>
   </p>
   <p mt-8 text-xs op-30>
   <button id="toggleExplanation" style="background: none; border: none; padding: 0; font-size: inherit; color: inherit; cursor: pointer; display: flex; align-items: center;">
@@ -344,23 +348,35 @@
         document.addEventListener('click', initAudio, { once: true });
     </script>
 </div>
-  <!-- 电子木鱼代码结束 -->
-</footer>
+<!-- 电子木鱼代码结束 -->
 
-<!-- 添加翻译脚本，使用Astro的client:load指令确保客户端加载 -->
+<!-- 翻译按钮处理脚本 -->
 <script is:inline src="https://res.zvo.cn/translate/translate.js"></script>
 <script is:inline>
-  // 等待文档加载完成
   document.addEventListener('DOMContentLoaded', function() {
-    const translateBtn = document.getElementById('translate-btn');
+    // 获取翻译按钮
+    const translateBtn = document.getElementById('translateBtn');
     if (translateBtn) {
+      // 为翻译按钮添加点击事件
       translateBtn.addEventListener('click', function() {
         if (typeof translate !== 'undefined') {
-          // 初始化翻译
-          translate.setUseVersion2();
-          translate.execute();
+          // 如果翻译下拉框未初始化，则初始化
+          if (!translate.isInitialized) {
+            // 翻译组件配置
+            translate.setUseVersion2(); // 使用v2版本
+            translate.execute(); // 执行翻译初始化，显示语言选择器
+            
+            // 标记已初始化
+            translate.isInitialized = true;
+          } else {
+            // 如果已初始化，则切换翻译下拉框的显示/隐藏
+            translate.toggleTranslateWidget();
+          }
+        } else {
+          console.error('翻译组件未成功加载');
         }
       });
     }
   });
 </script>
+</footer>
