@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>翻译组件</title>
+    <script src="https://res.zvo.cn/translate/translate.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #ff9f43;
+            --text-color: #2d3436;
+            --light-bg: #f8f9fa;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: transparent; /* 透明背景 */
+            overflow: hidden; /* 防止滚动条 */
+        }
+        .translate-container {
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            background: transparent; /* 透明背景 */
+        }
+        #translate {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 14px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            background-color: white;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        #translate:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.1);
+        }
+        #translate:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        #translate option {
+            font-size: 14px;
+            padding: 8px;
+            background-color: white;
+            color: var(--text-color);
+        }
+        /* 深色模式 */
+        body.dark-mode {
+            --text-color: #f5f6fa;
+        }
+        body.dark-mode #translate {
+            background-color: #333;
+            color: #eee;
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-mode #translate option {
+            background-color: #333;
+            color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="translate-container">
+        <div id="translateWrapper">
+            <!-- 翻译选择框将被动态插入到这里 -->
+        </div>
+    </div>
+
+    <script>
+        // 初始化翻译功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置翻译插件
+            translate.setUseVersion2();
+            translate.execute();
+            
+            // 将翻译选择框移动到容器中
+            setTimeout(function() {
+                const translateSelect = document.getElementById('translate');
+                if (translateSelect) {
+                    document.getElementById('translateWrapper').appendChild(translateSelect);
+                    
+                    // 监听语言变更，保存到 localStorage
+                    translateSelect.addEventListener('change', function() {
+                        const selectedValue = translateSelect.value;
+                        localStorage.setItem('selectedLanguage', selectedValue);
+                        
+                        // 通知父窗口语言已更改
+                        if (window.parent) {
+                            window.parent.postMessage({
+                                type: 'languageChanged',
+                                language: selectedValue
+                            }, '*');
+                        }
+                    });
+                }
+            }, 500);
+            
+            // 检查是否需要应用深色模式
+            const urlParams = new URLSearchParams(window.location.search);
+            const isDarkMode = urlParams.get('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // 从 localStorage 恢复选定的语言
+            const savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage) {
+                setTimeout(function() {
+                    const translateSelect = document.getElementById('translate');
+                    if (translateSelect) {
+                        translateSelect.value = savedLanguage;
+                    }
+                }, 600);
+            }
+        });
+    </script>
+</body>
+</html>
