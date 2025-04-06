@@ -131,180 +131,12 @@
       href="https://chatbodhi.aihub.ren/" target="_blank"
     >
       en
-    </a>
-<span px-1>|</span>
-
-<script src="https://res.zvo.cn/translate/translate.js"></script>
-    <style>
-        /* 翻译组件容器 */
-        .translate-container {
-            position: relative;
-            display: inline-block;
-        }
-        /* 翻译按钮样式 */
-        .translate-button {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border: none;
-            font-size: 1.3rem;
-            color: #333;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-        .translate-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        /* 下拉菜单样式 */
-        .translate-dropdown {
-            position: absolute;
-            top: 65px;
-            right: 0;
-            z-index: 1000;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            padding: 10px;
-            border: 1px solid rgba(0,0,0,0.1);
-            min-width: 180px;
-            backdrop-filter: blur(10px);
-            background: rgba(255,255,255,0.95);
-            animation: fadeDown 0.3s ease;
-        }
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* 选择框样式 */
-        #translate {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 100%;
-            padding: 12px 20px;
-            font-size: 14px;
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 8px;
-            background-color: white;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        #translate:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.1);
-        }
-        #translate:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        #translate option {
-            font-size: 14px;
-            padding: 10px;
-            background-color: white;
-            color: var(--text-color);
-        }
-        /* 深色模式 */
-        body.dark-mode .translate-button {
-            background: #333;
-            color: #eee;
-        }
-        body.dark-mode .translate-dropdown {
-            background: rgba(40, 40, 40, 0.95);
-            border-color: rgba(255,255,255,0.1);
-        }
-        body.dark-mode #translate {
-            background-color: #333;
-            color: #eee;
-            border-color: rgba(255,255,255,0.1);
-        }
-        body.dark-mode #translate option {
-            background-color: #333;
-            color: #eee;
-        }
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .translate-dropdown {
-                position: absolute;
-                top: 60px;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%);
-                width: 200px;
-            }
-        }
-    </style>
-    <div class="translate-container">
-        <button class="translate-button" id="translateToggle" aria-label="切换语言">
-            <i class="fas fa-language"></i>
-        </button>
-        <div class="translate-dropdown" id="translateDropdown"></div>
-    </div>
-    <script>
-        // 翻译功能初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            const translateToggle = document.getElementById('translateToggle');
-            const translateDropdown = document.getElementById('translateDropdown');
-            
-            // 初始化翻译功能
-            translate.setUseVersion2();
-            translate.execute();
-            
-            // 延迟加载翻译选择框
-            setTimeout(function() {
-                const translateSelect = document.getElementById('translate');
-                if (translateSelect && !translateDropdown.contains(translateSelect)) {
-                    translateDropdown.appendChild(translateSelect);
-                    
-                    // 选择语言后关闭下拉框
-                    translateSelect.addEventListener('change', function() {
-                        setTimeout(() => {
-                            translateDropdown.style.display = 'none';
-                        }, 300);
-                    });
-                }
-            }, 500);
-            
-            // 点击翻译按钮切换显示/隐藏
-            translateToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                translateDropdown.style.display = translateDropdown.style.display === 'block' ? 'none' : 'block';
-            });
-            
-            // 点击页面其他地方关闭下拉框
-            document.addEventListener('click', (e) => {
-                if (translateDropdown.style.display === 'block' &&
-                    !translateDropdown.contains(e.target) &&
-                    e.target !== translateToggle) {
-                    translateDropdown.style.display = 'none';
-                }
-            });
-            
-            // 阻止下拉框内部点击事件冒泡
-            translateDropdown.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        });
-    </script>
-
-
-
-
-
-
-
-
-
+    </a>  <span px-1>|</span>
+    <button id="translateToggle" style="background:none; border:none; padding:0; cursor:pointer; font-size:inherit; color:inherit; display:inline-flex; align-items:center;">
+      <i class="fas fa-language" style="margin-right:4px;"></i>翻译
+    </button>
+    <!-- 翻译组件iframe，初始隐藏 -->
+    <iframe id="translateFrame" src="translate.html" style="display:none; border:none; width:200px; height:50px; position:absolute; z-index:1000; background:transparent;" frameborder="0"></iframe>
   </p>
   <p mt-8 text-xs op-30>
   <button id="toggleExplanation" style="background: none; border: none; padding: 0; font-size: inherit; color: inherit; cursor: pointer; display: flex; align-items: center;">
@@ -338,6 +170,72 @@
     const toggleIcon = document.getElementById('toggleIcon');
     explanationText.hidden = !explanationText.hidden;
     toggleIcon.textContent = explanationText.hidden ? '▼' : '▲';
+  });
+
+  // 翻译功能 - 使用嵌入式iframe
+  const translateToggle = document.getElementById('translateToggle');
+  const translateFrame = document.getElementById('translateFrame');
+  let translateVisible = false;
+
+  translateToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    translateVisible = !translateVisible;
+    
+    if (translateVisible) {
+      // 计算位置，将iframe放在按钮附近
+      const buttonRect = translateToggle.getBoundingClientRect();
+      translateFrame.style.top = (buttonRect.bottom + 10) + 'px';
+      translateFrame.style.left = (buttonRect.left) + 'px';
+      
+      // 传递当前主题状态
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      translateFrame.src = `translate.html?darkMode=${isDarkMode}`;
+      
+      // 显示iframe
+      translateFrame.style.display = 'block';
+    } else {
+      // 隐藏iframe
+      translateFrame.style.display = 'none';
+    }
+  });
+
+  // 点击页面其他区域时隐藏翻译框
+  document.addEventListener('click', (e) => {
+    if (translateVisible && e.target !== translateToggle && !translateFrame.contains(e.target)) {
+      translateVisible = false;
+      translateFrame.style.display = 'none';
+    }
+  });
+
+  // 监听来自iframe的语言变化事件
+  document.addEventListener('translateLanguageChanged', function(e) {
+    const language = e.detail.language;
+    translate.changeLanguage(language);
+    translate.execute();
+  });
+
+  // 初始化翻译功能
+  document.addEventListener('DOMContentLoaded', function() {
+    // 添加所需的字体图标
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+      const fontAwesome = document.createElement('link');
+      fontAwesome.rel = 'stylesheet';
+      fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+      document.head.appendChild(fontAwesome);
+    }
+
+    // 初始化翻译
+    translate.setUseVersion2();
+    translate.execute();
+    
+    // 从localStorage加载保存的语言
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+      setTimeout(() => {
+        translate.changeLanguage(savedLanguage);
+        translate.execute();
+      }, 500);
+    }
   });
 </script>
   <br>
