@@ -99,12 +99,256 @@
       Azad
     </a>
     <span px-1>|</span>
-    <a
-      b-slate-link
-      href="http://home.azad.asia/dashang/" target="_blank"
-    >
-      随喜赞赏
-    </a>
+      <span
+    class="sang_shang_trigger b-slate-link" /* 添加一個新的 class="sang_shang_trigger"，並保留您原有的 class="b-slate-link" */
+    title="點擊隨喜贊賞，支持AI賽博佛祖項目" /* 可選：添加一個提示 */
+  >
+    隨喜贊賞
+  </span>
+<!-- 隨喜贊賞模態框 - 放在您頁面 </body> 結束標籤之前比較好 -->
+<div id="sangShangModal" class="sang_shang_modal">
+    <div class="sang_shang_content">
+        <span class="close_button">&times;</span>
+        <h2>隨喜贊賞</h2>
+        <p>感謝您的隨喜，您的支持將幫助AI賽博佛祖項目持續運營和改進。</p>
+        <p>一切供養皆具無量功德，隨喜您慈悲的心念。</p>
+
+        <div class="qr_container">
+            <!-- 支付寶二維碼 -->
+            <div class="qr_item">
+                <h3>支付寶</h3>
+                <!-- !!! 請將 src 屬性中的 "path/to/your/alipay_qr.png" 替換為您實際的支付寶收款二維碼圖片路徑或 URL !!! -->
+                <img src="path/to/your/alipay_qr.png" alt="支付寶二維碼" class="qr_code_img">
+                <p>請使用支付寶掃碼贊賞</p>
+            </div>
+
+            <!-- 微信支付二維碼 -->
+            <div class="qr_item">
+                <h3>微信支付</h3>
+                 <!-- !!! 請將 src 屬性中的 "path/to/your/wechatpay_qr.png" 替換為您實際的微信支付收款二維碼圖片路徑或 URL !!! -->
+                <img src="path/to/your/wechatpay_qr.png" alt="微信支付二維碼" class="qr_code_img">
+                <p>請使用微信掃碼贊賞</p>
+            </div>
+
+            <!-- 如果有其他支付方式，可以在這裡添加 -->
+            <!--
+            <div class="qr_item">
+                <h3>您的其他支付方式</h3>
+                <img src="path/to/your/other_qr.png" alt="其他支付二維碼" class="qr_code_img">
+                <p>相關提示文字</p>
+            </div>
+            -->
+        </div>
+
+        <p class="footer_message">功德無量，感恩合十。</p>
+    </div>
+</div>
+<!-- 模態框 HTML 結構結束 -->
+<style>
+/* ====================================================================== */
+/* 請將以下 CSS 樣式添加到您現有的 <style> 標籤內或您的 CSS 文件中 */
+/* ====================================================================== */
+
+/* 隨喜贊賞觸發區域樣式 (修改為更像鏈接，並添加 cursor) */
+/* 如果您的 b-slate-link class 已經設置了 cursor: pointer，這行可以省略 */
+.sang_shang_trigger {
+    cursor: pointer; /* 指示它是可點擊的 */
+    /* 如果 b-slate-link 沒有設置顏色或下劃線，可以在這裡添加 */
+    /* color: #007bff; */
+    /* text-decoration: none; */
+    /* transition: text-decoration 0.3s ease; */
+}
+/* 可選: 鼠標懸停時的樣式 */
+/* .sang_shang_trigger:hover { */
+/*     text-decoration: underline; */
+/* } */
+
+
+/* 隨喜贊賞模態框背景樣式 */
+.sang_shang_modal {
+    display: none; /* 默認隱藏 */
+    position: fixed; /* 固定在視口上 */
+    z-index: 1000; /* 確保在其他內容之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* 如果內容超出，允許滾動 */
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+    /* 當 JS 將 display 設置為 'flex' 時，用於居中內容 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+/* 模態框內容區域樣式 */
+.sang_shang_content {
+    background-color: #fff; /* 內容背景白色 */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    max-width: 500px; /* 設置最大寬度 */
+    width: 90%; /* 佔容器的寬度 */
+    max-height: 90vh; /* 最大高度為視口高度的90% */
+    overflow-y: auto; /* 如果內容過多，允許垂直滾動 */
+    position: relative; /* 用於定位關閉按鈕 */
+    text-align: center; /* 內容居中 */
+    box-sizing: border-box; /* 確保內邊距和邊框計算在寬度內 */
+}
+
+.sang_shang_content h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.sang_shang_content > p:first-of-type { /* 第一段文字 */
+     color: #555;
+     margin-bottom: 20px;
+     font-size: 15px;
+ }
+ .sang_shang_content p { /* 模態框內的段落通用樣式 */
+     font-size: 15px; /* 確保其他段落也有合適字體大小 */
+     margin-bottom: 10px; /* 段落間距 */
+ }
+ .sang_shang_content p:last-of-type { /* 底部消息調整間距 */
+     margin-bottom: 0;
+ }
+
+
+/* 關閉按鈕樣式 */
+.close_button {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close_button:hover,
+.close_button:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* 二維碼容器樣式 */
+.qr_container {
+    display: flex; /* 使用 Flexbox 排列二維碼 */
+    flex-wrap: wrap; /* 如果空間不足，換行 */
+    justify-content: center; /* 二維碼項水平居中 */
+    gap: 20px; /* 項目之間的間隙 */
+    margin-top: 20px;
+}
+
+/* 單個二維碼項目樣式 */
+.qr_item {
+    text-align: center; /* 二維碼圖片和文字居中 */
+    flex: 1 1 150px; /* 允許項目縮小和放大，基礎寬度 150px */
+    min-width: 120px; /* 最小寬度 */
+    max-width: 180px; /* 最大寬度，防止過大 */
+}
+
+.qr_item h3 {
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 16px;
+}
+
+.qr_code_img {
+    width: 100%; /* 圖片寬度適應容器 */
+    max-width: 150px; /* 最大寬度 */
+    height: auto; /* 高度自動 */
+    border: 1px solid #eee; /* 可選邊框 */
+    padding: 5px;
+    background-color: white;
+    box-sizing: border-box; /* 邊框和內邊距計算在寬度內 */
+}
+
+.qr_item p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 0; /* 移除底部多餘間距 */
+}
+
+/* 底部信息樣式 */
+.footer_message {
+    margin-top: 25px;
+    font-size: 15px;
+    color: #666;
+    font-style: italic;
+}
+
+/* CSS 響應式調整 */
+@media (max-width: 550px) {
+     .sang_shang_content {
+        padding: 20px;
+     }
+     .qr_container {
+        flex-direction: column; /* 小屏幕下垂直排列 */
+        align-items: center; /* 垂直排列時水平居中 */
+        gap: 15px; /* 調整垂直間距 */
+    }
+    .qr_item {
+        min-width: 150px; /* 小屏時設置一個稍大的最小寬度 */
+    }
+    .qr_code_img {
+        max-width: 150px; /* 小屏時最大寬度 */
+    }
+}
+
+/* ====================================================================== */
+/* CSS 樣式結束 */
+/* ====================================================================== */
+</style>
+<!-- ====================================================================== -->
+<!-- 請將以下 JavaScript 代碼添加到您頁面的 </body> 結束標籤之前 -->
+<!-- ====================================================================== -->
+<script>
+    // 獲取元素
+    var sangShangTrigger = document.querySelector('.sang_shang_trigger');
+    var modal = document.getElementById('sangShangModal');
+    var closeButton = document.querySelector('.close_button');
+
+    // 檢查元素是否存在，避免報錯
+    if (sangShangTrigger && modal && closeButton) {
+         // 當點擊觸發區域時，顯示模態框
+        sangShangTrigger.onclick = function() {
+            modal.style.display = "flex"; // 使用 flex 來居中模態框內容
+        }
+
+        // 當點擊關閉按鈕時，隱藏模態框
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // 當用戶點擊模態框背景（而不是內容區域）時，隱藏模態框
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // 當用戶按下 Esc 鍵時，隱藏模態框
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" || event.keyCode === 27) { // Esc key
+                if (modal.style.display !== "none") {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    } else {
+        console.error("隨喜贊賞模塊所需的元素未找到，功能可能無法正常工作。請檢查 .sang_shang_trigger, #sangShangModal, .close_button 是否存在於 HTML 中。");
+    }
+</script>
+<!-- ====================================================================== -->
+<!-- JavaScript 代碼結束 -->
+<!-- ====================================================================== -->
+
+
+
      <span px-1>|</span>
     <a
       b-slate-link
