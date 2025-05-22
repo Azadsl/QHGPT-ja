@@ -51,7 +51,7 @@ export default function Setting(props: {
             }}
           />
         </SettingItem>
-        <SettingItem icon="i-carbon:user-online" label="自定义系统角色">
+        <SettingItem icon="i-carbon:user-online" label="自定义角色">
           <input
             type="text"
             value={props.setting().customRule}
