@@ -42,7 +42,7 @@ export default function Setting(props: {
             type="password"
             placeholder="必需，请看下方告示"
             value={props.setting().openaiAPIKey}
-            class="max-w-150px ml-1em px-1 text-slate rounded-sm bg-slate bg-op-15 focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:text-slate-400 placeholder:op-30"
+            class="max-w-200px ml-1em px-1 text-slate rounded-sm bg-slate bg-op-15 focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:text-slate-400 placeholder:op-30"
             onInput={e => {
               props.setSetting({
                 ...props.setting(),
@@ -55,7 +55,7 @@ export default function Setting(props: {
           <input
             type="text"
             value={props.setting().customRule}
-            class="text-ellipsis  max-w-150px ml-1em px-1 text-slate rounded-sm bg-slate bg-op-15 focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:text-slate-400 placeholder:op-30"
+            class="text-ellipsis  max-w-200px ml-1em px-1 text-slate rounded-sm bg-slate bg-op-15 focus:bg-op-20 focus:ring-0 focus:outline-none placeholder:text-slate-400 placeholder:op-30"
             onInput={e => {
               props.setSetting({
                 ...props.setting(),
