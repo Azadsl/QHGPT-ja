@@ -208,6 +208,254 @@ window.addEventListener('resize', adjustFogSize);
 
 
 
+<!-- 经书部分 -->
+<style>
+.bookicon {
+    cursor: pointer;
+    transition: transform .18s, filter .15s;
+    display: block;
+position: relative;
+  top: 5px;
+}
+.bookicon:hover, .bookicon:focus {
+    transform: scale(1.08);
+    filter: brightness(1.15) drop-shadow(0 2px 6px #fffbe2);
+    outline: none;
+}
+.modal-overlay {
+    display:none;
+    position:fixed;
+    top:0; left:0; z-index:1000;
+    width:100vw; height:100vh;
+    background:transparent;
+    justify-content:center; align-items:center; 
+    cursor:pointer;
+}
+.book-container {
+    width:520px; height:360px;
+    border-radius:8px;
+    position:relative;
+    perspective:1200px;
+    cursor:default;
+    max-width:98vw; max-height:96vh; opacity:1;
+    display: flex; justify-content: center; align-items: center;
+    box-sizing: border-box;
+}
+.book {
+    width:100%;height:100%; position:relative;
+}
+.page {
+    background-color:#fcf6dd;
+    color:#43300e;
+    padding:20px 8px 20px 8px;
+    font-size:21px;
+    line-height:1.65;
+    border:1.3px solid #d6b88c;
+    box-sizing:border-box; 
+    box-shadow:inset 0 0 11px rgba(0,0,0,0.07);
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    writing-mode: vertical-rl; 
+    text-align: justify;
+    position:relative; font-family:"Kaiti TC", "DFKai-SB", "KaiTi", "楷体", serif;
+    min-height:310px;
+    min-width: 236px;
+    white-space: pre-wrap;
+    letter-spacing: 0.08em;
+    transition: font-size .3s;
+    overflow:hidden;
+    background-image: repeating-linear-gradient( 45deg, transparent 0 8px, rgba(195,170,102,0.035) 8px 16px);
+}
+.page-watermark {
+    position:absolute;
+    top:53%; left:50%;
+    transform:translate(-50%,-50%);
+    width:90px; height:90px;
+    opacity:0.07; pointer-events:none; z-index:0;
+}
+.page.stf__page--left::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; width: 14px; height: 100%;
+    background:linear-gradient(to right,rgba(110,82,35,0.13) 0%,rgba(160,123,61,0.09) 90%,transparent 100%);
+    z-index: 5;
+    pointer-events:none;
+    box-shadow:2px 0 8px 1px rgba(69,48,10,0.14);
+    border-right:1.5px dashed #bfa562;
+}
+.page.stf__page--right::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; width: 14px; height: 100%;
+    background:linear-gradient(to left,rgba(110,82,35,0.13) 0%,rgba(160,123,61,0.09) 90%,transparent 100%);
+    z-index: 5;
+    pointer-events:none;
+    box-shadow:-2px 0 8px 1px rgba(69,48,10,0.1);
+    border-left:1.5px dashed #bfa562;
+}
+.cover,.back-cover {
+    background:
+        repeating-linear-gradient(120deg,rgba(240,205,120,.022) 0 8px,rgba(181,115,39,0.08) 8px 24px),
+        repeating-linear-gradient(60deg,rgba(193,86,16,0.018) 0 15px,rgba(255,236,174,0.04) 15px 36px),
+        linear-gradient(135deg,#67411d 70%, #c0ac87 100%);
+    color:#ead5a0;
+    font-size:22px;
+    border: 2.5px solid #b29d63;
+    box-shadow:0 0 0 1.5px #ccbe8c,4px 0 17px rgba(0,0,0,0.23), inset 0 0 20px rgba(125,96,44,0.22);
+    position:relative; text-align:center;
+    font-weight:600; letter-spacing:3px;
+    overflow:hidden;
+    min-height:310px;
+}
+.cover::before, .back-cover::before {
+    content: '';
+    position:absolute;z-index:1;left:0;top:0;width:100%;height:100%;
+    background-image:
+        repeating-linear-gradient(135deg,rgba(156,117,30,.08) 0 1.5px,transparent 2px 30px),
+        repeating-linear-gradient(120deg,rgba(212,177,69,.07) 0 1.5px,transparent 2px 25px);
+    opacity:.23;
+    pointer-events:none;
+}
+.cover::after, .back-cover::after {
+    content:'';
+    position:absolute;left:5px;top:6px;right:5px;bottom:6px;z-index:2;
+    border:2px double #e7c97e;
+    border-radius:5px;
+    pointer-events:none; opacity:.88;
+}
+.cover h2, .back-cover h2 {
+    position:relative;z-index:3;margin:0;background:rgba(235,201,120,0.14);
+    border-radius:6px;padding:12px 18px;box-shadow:2px 3px 13px rgba(90,30,12,0.07);
+    font-size: 1.12em;
+    letter-spacing:5px;
+    font-family:"Kaiti TC", "DFKai-SB", "KaiTi", "楷体", serif;
+    writing-mode:vertical-rl;
+}
+.cover .lotus, .back-cover .lotus {
+    position: absolute;
+    width: 38px; height: 38px; opacity: .27; z-index:3;
+}
+.cover .top-left, .back-cover .top-left {top: 10px;left: 10px;}
+.cover .bottom-right, .back-cover .bottom-right {bottom: 10px;right: 10px;transform:rotate(180deg);}
+.page.stf__page--hard { box-shadow:0 0 16px 2px rgba(120,84,20,0.11)!important; }
+.stf__block--simple { display:none !important; }
+@media (max-width:560px){
+    .book-container {width:99vw; height:64vw; min-width:0; max-width:100vw; max-height:95vw;}
+    .page {font-size:18px; min-height:30vw; padding:15px 6px;} /* 增加内页字体大小并调整内边距 */
+    .cover, .back-cover {font-size:18px; min-height:30vw;}
+    .cover h2, .back-cover h2 {font-size:1em; padding:10px 14px;} /* 调整封面标题字体和内边距 */
+    .page-watermark {width:70px; height:70px;} /* 缩小水印尺寸 */
+    .cover .lotus, .back-cover .lotus {width:30px; height:30px;} /* 缩小莲花装饰尺寸 */
+}
+</style>
+<svg t="1748420877185"  id="bookSvgIcon" class="bookicon" tabindex="0"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4072" width="32" height="32"><path d="M752.3 245.1h-0.3c-14.6 0-26.5 11.9-26.5 26.5v267.2c0 0.8 0 1.6 0.1 2.4v150.3c0 0.8 0 1.6-0.1 2.4V752c0 14.7-12 26.8-26.8 26.8H325.3c-14.7 0-26.8-12-26.8-26.8V645.4c0-14.7 12-26.8 26.8-26.8h319.8v-0.1c14.7 0 26.7-11.9 26.7-26.7h0.3l0.1-213.3V245.2c0-29.4-24-53.4-53.4-53.4H298.5c-29.4 0-53.4 24-53.4 53.4v533.7c0 29.4 24 53.4 53.4 53.4h426.9c29.4 0 53.4-24 53.4-53.4V271.6c0-14.6-11.9-26.5-26.5-26.5zM397.8 298c3.2-3.4 7.1-5.1 11.8-5.1h36.6v-26.1c0-4.5 1.7-8.5 5.1-11.8 3.2-3.4 7.1-5.1 11.8-5.1 4.5 0 8.5 1.7 11.8 5.1 3.4 3.4 5.1 7.3 5.1 11.8v26.1h28.1v-25.7c0-4.7 1.7-8.8 5.1-12.2 3.2-3.2 7.1-4.7 11.8-4.7 4.5 0 8.5 1.6 11.8 4.7 3.4 3.4 5.1 7.4 5.1 12.2v25.7h12.9c11.1 0 20.5 4 28.4 11.8 7.7 7.7 11.5 17 11.5 28.1v19.3c0 11.3-3.8 20.9-11.5 28.8-7.9 7.7-17.4 11.5-28.4 11.5H542V426h22.7c11.1 0 20.7 4.1 28.8 12.2 7.9 7.9 11.8 17.5 11.8 28.8v44c0 4.7-1.6 8.7-4.7 11.8-3.4 3.4-7.4 5.1-12.2 5.1-4.5 0-8.5-1.7-11.8-5.1-3.4-3.2-5.1-7.1-5.1-11.8v-44c0-4.7-2.3-7.1-6.8-7.1H542v79.9c0 4.7-1.7 8.7-5.1 11.8-3.4 3.4-7.3 5.1-11.8 5.1-4.7 0-8.7-1.7-11.8-5.1-3.4-3.2-5.1-7.1-5.1-11.8v-79.9h-31.8c-3.2 19.9-10.7 39.2-22.7 57.9-2.3 3.4-7.3 9.9-15.2 19.6l-12.2 14.9c-7.9 7.9-15.9 8.5-24 1.7-3.6-3.2-5.5-7-5.8-11.5-0.5-4.5 0.9-8.6 4.1-12.2 10.6-12 19-22.3 25.1-31.1 8.3-13.1 13.8-26.2 16.3-39.3h-13.5c-11.1 0-20.4-3.8-28.1-11.5-7.9-7.9-11.8-17.4-11.8-28.4v-21.7c0-10.8 3.8-20.1 11.5-27.8 7.9-7.9 17.3-11.8 28.1-11.8h18.3v-31.8h-36.6c-4.7 0-8.7-1.7-11.8-5.1-3.4-3.2-5.1-7.1-5.1-11.8-0.3-4.7 1.4-8.6 4.8-12z m-91.1 96.5l53.2-134.1c4.3-10.6 11.6-13.8 22-9.5 4.3 1.8 7.4 4.7 9.5 8.8 1.8 4.3 1.8 8.7 0 13.2l-19.6 49.4c0.2 0.5 0.3 1.6 0.3 3.4v215c0 4.7-1.6 8.7-4.7 11.8-3.4 3.4-7.4 5.1-12.2 5.1-4.7 0-8.7-1.7-11.8-5.1-3.4-3.2-5.1-7.1-5.1-11.8V407c-4.5 9.7-11.8 12.9-22 9.5-4.3-1.8-7.3-4.9-9.1-9.1-2.2-4.6-2.3-8.9-0.5-12.9z" fill="#BE9567" p-id="4073"></path><path d="M645.3 672.1H378.2c-14.6 0-26.5 11.9-26.5 26.5v0.4c0 14.6 11.9 26.5 26.5 26.5h267.2c14.6 0 26.5-11.9 26.5-26.5v-0.4c0-14.6-12-26.5-26.6-26.5zM561 352.6v-19.3c0-4.1-2-6.1-6.1-6.1H542V359h12.9c4 0 6.1-2.1 6.1-6.4zM422.2 398.6v21.7c0 4.1 2 6.1 6.1 6.1h17.3c0.4-10.8 0.7-22 0.7-33.5H428c-3.9 0-5.8 1.9-5.8 5.7zM508.1 392.9H480c0 11.1-0.2 22.2-0.7 33.5h28.8v-33.5zM480 327.2h28.1V359H480z" fill="#BE9567" p-id="4074"></path></svg>
+<div class="modal-overlay" id="bookModal" onclick="closeBook()">
+    <div class="book-container" onclick="event.stopPropagation();">
+        <div class="book" id="book">
+            <!-- 封面 -->
+            <div class="page cover">
+                <h2>般若波羅蜜多心經</h2>
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="lotus top-left" alt="Lotus">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="lotus bottom-right" alt="Lotus">
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+觀自在菩薩，行深般若波羅蜜多時，照見五蘊皆空，度一切苦厄。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+舍利子，色不異空，空不異色，色即是空，空即是色，受想行識，亦復如是。
+            </div>
+            <div class="page">
+                 <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+舍利子，是諸法空相，不生不滅，不垢不淨，不增不減。
+            </div>
+            <div class="page">
+                 <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+是故空中無色，無受想行識，無眼耳鼻舌身意，無色聲香味觸法，無眼界，乃至無意識界。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+無無明，亦無無明盡，乃至無老死，亦無老死盡。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+無苦集滅道，無智亦無得。以無所得故，菩提薩埵，依般若波羅蜜多故，心無罣礙。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+無罣礙故，無有恐怖，遠離顛倒夢想，究竟涅槃。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+三世諸佛，依般若波羅蜜多故，得阿耨多羅三藐三菩提。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+故知般若波羅蜜多，是大神咒，是大明咒，是無上咒，是無等等咒，能除一切苦，真實不虛。
+            </div>
+            <div class="page">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="page-watermark" alt="Watermark Lotus">
+故說般若波羅蜜多咒，即說咒曰：
+揭諦　揭諦　波羅揭諦
+波羅僧揭諦　菩提薩婆訶
+            </div>
+            <!-- 封底 -->
+            <div class="page back-cover">
+                <h2>圓滿</h2>
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="lotus top-left" alt="Lotus">
+                <img src="https://img.aihub.ren/i/2025/05/27/10xtgwk.png" class="lotus bottom-right" alt="Lotus">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.3/dist/js/page-flip.browser.min.js"></script>
+<script>
+let pageFlipInstance;
+function openBook() {
+    document.getElementById('bookModal').style.display = 'flex';
+    if(!pageFlipInstance) {
+        pageFlipInstance = new St.PageFlip(document.getElementById('book'), {
+            width: 260,
+            height: 360,
+            size: 'fixed',
+            maxShadowOpacity: 0.65,
+            showCover: true,
+            startPage: 0,
+            flippingTime: 800,
+            useMouseEvents: true,
+            swipeDistance: 30,
+            drawShadow:true,
+        });
+        pageFlipInstance.loadFromHTML(document.querySelectorAll('#book .page'));
+        pageFlipInstance.turnToPage(0);
+    }
+}
+function closeBook(){
+    document.getElementById('bookModal').style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded',function(){
+    document.getElementById('bookModal').style.display='none';
+    var bookIcon = document.getElementById('bookSvgIcon');
+    if(bookIcon){
+        bookIcon.addEventListener('click', openBook);
+        bookIcon.addEventListener('keydown',function(e){
+            if(e.key==="Enter"||e.key===" ") openBook();
+        });
+    }
+    // 添加点击空白区域关闭书本的逻辑
+    var modalOverlay = document.getElementById('bookModal');
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) { // 确保只在点击空白区域时关闭
+            closeBook();
+        }
+    });
+});
+</script>
+
+
+
+
+
  <button onclick="stopp()" title="散华" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10">
   <svg t="1741420050225" class="icon" viewBox="0 0 1049 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1828" width="24" height="24">
     <path d="M525.584 573.347s268.831-2.63 309.364 193.243l-76.465 21.91 12.927 84.132a214.057 214.057 0 0 1-96.84-4.82a224.793 224.793 0 0 1-148.986-289.426z" fill="#EFC0C4" p-id="1829"></path>
