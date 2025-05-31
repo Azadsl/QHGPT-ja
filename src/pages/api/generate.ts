@@ -31,14 +31,13 @@ export const post: APIRoute = async (context) => {
 
   // 如果既没有用户提供的 API Key 也没有默认 API Key，返回错误提示
   if (!apiKey) {
-    return new Response("🙏 看下方 告示 或联系管理员配置默认 API Key")
+    return new Response("🙏 请看下方【告示】或联系管理员配置默认 API Key")
   }
 
   const prompt = prompts.find((item) => item.role == setting.role)?.prompt || setting.customRule;
   let reqMessages = [];
-  // 保留message的最近8条,第一套的权重最终
 
-  const maxToken = 4000 - countTokens(prompt) - countTokens(messages[messages.length - 1].content)
+  const maxToken = 50000 - countTokens(prompt) - countTokens(messages[messages.length - 1].content)
 
   let j = 0;
   let len = 0;
@@ -50,7 +49,7 @@ export const post: APIRoute = async (context) => {
       continue;
     }
     len += countTokens(msg.content);
-    if (i > messages.length - 6) {
+    if (i > messages.length - 20) {
       reqMessages.unshift(msg)
       continue;
     }
@@ -79,6 +78,12 @@ export const post: APIRoute = async (context) => {
   try {
     response = await fetch(`${baseUrl}/v1/chat/completions`, initOptions) as Response;
     if (response.status > 400) {
+      // 专门处理余额不足或限额超出的错误
+      if (response.status === 402 || response.statusText.includes('insufficient')) {
+        return new Response("🙏 默认 API Key 余额不足或被限制，请看下方【告示】")
+      } else if (response.status === 429) {
+        return new Response("🙏 当前系统负载过高或 API Key 限额已达上限，请在看下方【告示】")
+      }
       throw new Error(`${response.status}:${response.statusText}`);
     }
   } catch (error) {
