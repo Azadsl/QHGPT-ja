@@ -1,12 +1,10 @@
 import type { APIRoute } from 'astro'
 import { generatePayload, parseOpenAIStream } from '@/utils/openAI'
 import { verifySignature } from '@/utils/auth'
-const demoKey = import.meta.env.DEMOKEY;
+const defaultAPIKey = import.meta.env.DEFAULT_API_KEY || '';
 import prompts from "@/prompts"
 
 const baseUrl = 'https://api.siliconflow.cn';
-
-
 
 // cloudflare pages 不支持node方法，简单的粗算
 function countTokens(str: string) {
@@ -28,11 +26,12 @@ export const post: APIRoute = async (context) => {
     return new Response('No input text')
   }
 
-  let sk = setting.openaiAPIKey || demoKey;
+  // 优先使用用户提供的 API Key，如果没有则使用默认 API Key
+  let apiKey = setting.openaiAPIKey || defaultAPIKey;
 
- 
-  if (sk == demoKey) {
-    return new Response("🙏 请看下方 告示 ，并在 拈花 处填入 API KEY")
+  // 如果既没有用户提供的 API Key 也没有默认 API Key，返回错误提示
+  if (!apiKey) {
+    return new Response("🙏 看下方 告示 或联系管理员配置默认 API Key")
   }
 
   const prompt = prompts.find((item) => item.role == setting.role)?.prompt || setting.customRule;
@@ -73,7 +72,7 @@ export const post: APIRoute = async (context) => {
     })
   }
 
-  const initOptions = generatePayload(sk, 0.8, reqMessages);
+  const initOptions = generatePayload(apiKey, 0.8, reqMessages);
   // @ts-ignore
   let response = new Response();
 
@@ -88,8 +87,6 @@ export const post: APIRoute = async (context) => {
 
   return new Response(parseOpenAIStream(response))
 }
-
-
 
 export const get: APIRoute = async (context) => {
   const roles = prompts.filter((item) => {
