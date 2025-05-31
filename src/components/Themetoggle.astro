@@ -907,55 +907,54 @@ button[onclick="stopp()"] {
         };
     }
 
-   // 新增：名言功能脚本
-function fetchQuote() {
-  const quoteText = document.getElementById('quoteText');
-  const quoteSource = document.getElementById('quoteSource');
-  quoteText.textContent = '加载中，请稍候...';
-  quoteSource.textContent = '';
-
-  fetch('https://bodhiapi.aihub.ren/api')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('API 请求失败');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("成功获取名言数据：", data);
-      quoteText.textContent = data.quote || '暂无名言内容';
-      quoteSource.textContent = data.source ? `—— ${data.source}` : '';
-    })
-    .catch(error => {
-      console.error("获取名言失败：", error);
-      quoteText.textContent = '加载失败，请重试。';
+    // 新增：名言功能脚本
+    function fetchQuote() {
+      const quoteText = document.getElementById('quoteText');
+      const quoteSource = document.getElementById('quoteSource');
+      quoteText.textContent = '加载中，请稍候...';
       quoteSource.textContent = '';
-    });
-}
 
-function openQuoteModal() {
-  console.log("打开名言模态框");
-  document.getElementById('quoteModal').style.display = 'flex';
-  fetchQuote();
-}
+      fetch('https://bodhiapi.aihub.ren/api')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('API 请求失败');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("成功获取名言数据：", data);
+          quoteText.textContent = data.quote || '暂无名言内容';
+          quoteSource.textContent = data.source ? `—— ${data.source}` : '';
+        })
+        .catch(error => {
+          console.error("获取名言失败：", error);
+          quoteText.textContent = '加载失败，请重试。';
+          quoteSource.textContent = '';
+        });
+    }
 
-function closeQuoteModal(event) {
-  if (event.target.classList.contains('quote-modal') || event.target.id === 'closeQuoteModalBtn') {
-    console.log("关闭名言模态框");
-    document.getElementById('quoteModal').style.display = 'none';
-  }
-}
+    function openQuoteModal() {
+      console.log("打开名言模态框");
+      document.getElementById('quoteModal').style.display = 'flex';
+      fetchQuote();
+    }
 
-const quoteTrigger = document.getElementById('quoteTrigger');
-if (quoteTrigger) {
-  quoteTrigger.addEventListener('click', openQuoteModal);
-}
+    function closeQuoteModal(event) {
+      if (event.target.classList.contains('quote-modal') || event.target.id === 'closeQuoteModalBtn') {
+        console.log("关闭名言模态框");
+        document.getElementById('quoteModal').style.display = 'none';
+      }
+    }
 
-const closeQuoteBtn = document.getElementById('closeQuoteModalBtn');
-if (closeQuoteBtn) {
-  closeQuoteBtn.addEventListener('click', closeQuoteModal);
-}
+    const quoteTrigger = document.getElementById('quoteTrigger');
+    if (quoteTrigger) {
+      quoteTrigger.addEventListener('click', openQuoteModal);
+    }
 
+    const closeQuoteBtn = document.getElementById('closeQuoteModalBtn');
+    if (closeQuoteBtn) {
+      closeQuoteBtn.addEventListener('click', closeQuoteModal);
+    }
 const refreshQuoteBtn = document.getElementById('refreshQuote');
 if (refreshQuoteBtn) {
   refreshQuoteBtn.addEventListener('click', function() {
@@ -964,4 +963,5 @@ if (refreshQuoteBtn) {
   });
 }
 
+  });
 </script>
