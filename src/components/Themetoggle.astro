@@ -173,7 +173,7 @@ body, html {
     z-index: 1000;
     width: 100vw;
     height: 100vh;
-    background: transparent; /* 添加背景遮罩 */
+    background: rgba(0, 0, 0, 0.5); /* 添加背景遮罩 */
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -399,6 +399,116 @@ body, html {
     </div>
 </div>
 
+<!-- 新增：名言按钮，位于散华按钮左侧 -->
+<button id="quoteTrigger" title="禅言" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10" client:load>
+  <svg t="1741420050225" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1828" width="24" height="24">
+    <path d="M512 85.333C269.76 85.333 74.667 280.427 74.667 522.667c0 242.24 195.093 437.333 437.333 437.333s437.333-195.093 437.333-437.333C949.333 280.427 754.24 85.333 512 85.333zM512 896c-205.867 0-373.333-167.467-373.333-373.333 0-205.867 167.467-373.333 373.333-373.333 205.867 0 373.333 167.467 373.333 373.333C885.333 728.533 717.867 896 512 896z" fill="#D6B88C" p-id="1829"></path>
+    <path d="M704 341.333H320c-17.653 0-32 14.347-32 32s14.347 32 32 32h384c17.653 0 32-14.347 32-32S721.653 341.333 704 341.333zM704 469.333H320c-17.653 0-32 14.347-32 32s14.347 32 32 32h384c17.653 0 32-14.347 32-32S721.653 469.333 704 469.333zM704 597.333H320c-17.653 0-32 14.347-32 32s14.347 32 32 32h384c17.653 0 32-14.347 32-32S721.653 597.333 704 597.333z" fill="#BE9567" p-id="1830"></path>
+  </svg>
+</button>
+
+<!-- 新增：名言模态框，富有禅意，无背景遮罩 -->
+<div id="quoteModal" class="quote-modal" onclick="closeQuoteModal(event)">
+  <div class="quote-container">
+    <button id="closeQuoteModalBtn" class="quote-close-btn">×</button>
+    <div id="quoteContent" class="quote-content">
+      <p id="quoteText">加载中，请稍候...</p>
+      <p id="quoteSource" class="quote-source"></p>
+    </div>
+  </div>
+</div>
+
+<style>
+/* 名言模态框样式 */
+.quote-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent; /* 无背景遮罩 */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.quote-container {
+  position: relative;
+  width: 500px;
+  max-width: 90vw;
+  background: #fcf6dd; /* 淡米色背景，富有禅意 */
+  border: 1.5px solid #d6b88c; /* 金色柔和边框 */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(214, 184, 140, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.quote-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #b8976d;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.quote-close-btn:hover {
+  transform: scale(1.2);
+}
+
+.quote-content {
+  text-align: center;
+  color: #43300e; /* 深棕色文字，沉稳 */
+  font-family: "Kaiti TC", "DFKai-SB", "KaiTi", "楷体", serif; /* 书法风格字体 */
+  margin: 0;
+  padding: 10px;
+}
+
+#quoteText {
+  font-size: 22px;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+  font-weight: 500;
+  letter-spacing: 0.1em; /* 字间距增加，体现禅意 */
+}
+
+.quote-source {
+  font-size: 16px;
+  opacity: 0.8;
+  margin: 0;
+  font-style: italic;
+}
+
+/* 移动端适配 */
+@media (max-width: 560px) {
+  .quote-container {
+    width: 85vw;
+    padding: 15px;
+  }
+  #quoteText {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .quote-source {
+    font-size: 14px;
+  }
+  .quote-close-btn {
+    font-size: 18px;
+    top: 8px;
+    right: 8px;
+  }
+}
+</style>
 
 <button onclick="stopp()" title="散华" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10" client:load>
   <svg t="1741420050225" class="icon" viewBox="0 0 1049 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1828" width="24" height="24">
@@ -446,12 +556,14 @@ body, html {
 button[onclick="stopp()"] {
     border: 0;
   }
+  #quoteTrigger {
+    border: 0;
+  }
 </style>
 
 </div>
 
-<script src="/js/page-flip.browser.min.js" defer></script>
-
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.3/dist/js/page-flip.browser.min.js" defer></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     console.log("页面加载完成，初始化所有功能");
@@ -767,6 +879,55 @@ button[onclick="stopp()"] {
                 staticx = true;
             }
         };
+    }
+
+    // 新增：名言功能脚本
+    function fetchQuote() {
+      const quoteText = document.getElementById('quoteText');
+      const quoteSource = document.getElementById('quoteSource');
+      quoteText.textContent = '加载中，请稍候...';
+      quoteSource.textContent = '';
+
+      fetch('https://bodhiapi.aihub.ren/api')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('API 请求失败');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("成功获取名言数据：", data);
+          quoteText.textContent = data.quote || '暂无名言内容';
+          quoteSource.textContent = data.source ? `—— ${data.source}` : '';
+        })
+        .catch(error => {
+          console.error("获取名言失败：", error);
+          quoteText.textContent = '加载失败，请重试。';
+          quoteSource.textContent = '';
+        });
+    }
+
+    function openQuoteModal() {
+      console.log("打开名言模态框");
+      document.getElementById('quoteModal').style.display = 'flex';
+      fetchQuote();
+    }
+
+    function closeQuoteModal(event) {
+      if (event.target.classList.contains('quote-modal') || event.target.id === 'closeQuoteModalBtn') {
+        console.log("关闭名言模态框");
+        document.getElementById('quoteModal').style.display = 'none';
+      }
+    }
+
+    const quoteTrigger = document.getElementById('quoteTrigger');
+    if (quoteTrigger) {
+      quoteTrigger.addEventListener('click', openQuoteModal);
+    }
+
+    const closeQuoteBtn = document.getElementById('closeQuoteModalBtn');
+    if (closeQuoteBtn) {
+      closeQuoteBtn.addEventListener('click', closeQuoteModal);
     }
   });
 </script>
