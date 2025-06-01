@@ -118,12 +118,14 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
             <path fill="currentColor" d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4Z" />
           </svg>
           <span>{copied() ? '入藏' : '录经'}</span>
-          <div
-            class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs c-white inline-flex justify-center items-center rounded absolute z-1 transition duration-600 whitespace-nowrap -top-8"
-            group-hover:opacity-100
-          >
-            {copied() ? '已复制' : '复制'}
-          </div>
+<div
+  class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs c-white inline-flex justify-center items-center rounded absolute z-1 transition duration-600 whitespace-nowrap -top-8"
+  // 鼠标悬停时只变成可见，如果 copied() 是 false，则 opacity 始终0，提示框不显示。
+  classList={{ 'opacity-100': copied() }}
+>
+  {/* copied=false 时无内容也没用提示 */}
+  {copied() ? '已复制' : ''}
+</div>
         </div>
 
         {showRetry?.() && onRetry && (
