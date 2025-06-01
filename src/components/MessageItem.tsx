@@ -111,9 +111,9 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
       <div class="flex items-center justify-end px-3 mb-2 gap-2">
         <div
           onClick={handleBottomCopy}
-          class="flex items-center gap-1 px-2 py-0.5 op-70 border border-slate rounded-md text-sm cursor-pointer hover:bg-slate/10 relative group"
+          class="flex items-center gap-1 px-1.5 py-0.25 op-70 border border-slate rounded-md text-xs cursor-pointer hover:bg-slate/10 relative group"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32">
+          <svg xmlns="http://www.w3.org/2000/svg" width="0.8em" height="0.8em" viewBox="0 0 32 32">
             <path fill="currentColor" d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Z" />
             <path fill="currentColor" d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4Z" />
           </svg>
@@ -131,7 +131,7 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
         {showRetry?.() && onRetry && (
           <div
             onClick={onRetry}
-            class="flex items-center gap-1 px-2 py-0.5 op-70 border border-slate rounded-md text-sm cursor-pointer hover:bg-slate/10"
+            class="flex items-center gap-1 px-1.5 py-0.25 op-70 border border-slate rounded-md text-xs cursor-pointer hover:bg-slate/10"
           >
             <IconRefresh />
             <span>轮转</span>
