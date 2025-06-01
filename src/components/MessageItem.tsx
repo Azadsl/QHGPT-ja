@@ -120,7 +120,7 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
   <span>{copied() ? '入藏' : '录经'}</span>
 
   <div
-    class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs text-white inline-flex justify-center items-center rounded absolute z-10 transition-opacity duration-500 whitespace-nowrap -top-8"
+    class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs text-white inline-flex justify-center items-center rounded absolute z-9999 transition-opacity duration-500 whitespace-nowrap -top-8"
     classList={{ 'opacity-100': copied() }}
   >
     {copied() ? '已复制' : ''}
