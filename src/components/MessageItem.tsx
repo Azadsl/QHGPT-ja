@@ -95,7 +95,7 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
           </svg>
           <span>复制</span>
           <div class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs c-white inline-flex justify-center items-center rounded absolute z-1 transition duration-600 whitespace-nowrap -top-8" group-hover:opacity-100>
-            {copied() ? '已复制' : '复制'}
+            {copied() ? '已渡' : '渡文'}
           </div>
         </div>
         {showRetry?.() && onRetry && (
