@@ -117,12 +117,12 @@ export default ({ role, message, assistantAvatar, showRetry, onRetry }: Props) =
             <path fill="currentColor" d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Z" />
             <path fill="currentColor" d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4Z" />
           </svg>
-          <span>{copied() ? '已渡' : '渡文'}</span>
+          <span>{copied() ? '入藏' : '录经'}</span>
           <div
             class="opacity-0 h-7 bg-black px-2.5 py-1 box-border text-xs c-white inline-flex justify-center items-center rounded absolute z-1 transition duration-600 whitespace-nowrap -top-8"
             group-hover:opacity-100
           >
-            {copied() ? '已渡' : '渡文'}
+            {copied() ? '已复制' : '复制'}
           </div>
         </div>
 
